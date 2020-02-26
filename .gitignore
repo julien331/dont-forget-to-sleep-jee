@@ -58,6 +58,7 @@ tmp/**/*
 *~.nib
 local.properties
 .classpath
+.project
 .settings/
 .loadpath
 
@@ -96,6 +97,7 @@ target/
 ### STS ###
 .apt_generated
 .classpath
+.project
 .factorypath
 .settings
 .springBeans
