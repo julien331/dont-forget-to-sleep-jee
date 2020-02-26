@@ -1,0 +1,37 @@
+<svg version="1.1" baseProfile="full" width="147" height="442" viewbox="0 0 147 442" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
+  <title >nomnoml</title>
+  <desc >[TASK | id;name;description;id_owner;done]
+[USER | id;name;password;email;id_role]
+[ROLE | id;name;permissions]
+
+[TASK]n---n[USER]
+[USER]1---n[ROLE]</desc>
+  <text x="82" y="155.5" style="fill: #33322E;font-weight:normal;">n</text>
+  <text x="56.5" y="167.5" style="fill: #33322E;font-weight:normal;">n</text>
+  <path d="M74 135.5 L74 155.5 L74 175.5 L74 175.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <text x="82" y="317.5" style="fill: #33322E;font-weight:normal;">1</text>
+  <text x="56.5" y="329.5" style="fill: #33322E;font-weight:normal;">n</text>
+  <path d="M74 297.5 L74 317.5 L74 337.5 L74 337.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <rect x="13.5" y="13.5" height="122" width="121" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="74" y="35" style="fill: #33322E;text-anchor: middle;">TASK</text>
+  <path d="M13.5 44.5 L134.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="21.5" y="66" style="fill: #33322E;font-weight:normal;">id</text>
+  <text x="21.5" y="81" style="fill: #33322E;font-weight:normal;">name</text>
+  <text x="21.5" y="96" style="fill: #33322E;font-weight:normal;">description</text>
+  <text x="21.5" y="111" style="fill: #33322E;font-weight:normal;">id_owner</text>
+  <text x="21.5" y="126" style="fill: #33322E;font-weight:normal;">done</text>
+  <rect x="28.5" y="175.5" height="122" width="92" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="74.5" y="197" style="fill: #33322E;text-anchor: middle;">USER</text>
+  <path d="M28.5 206.5 L120.5 206.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="36.5" y="228" style="fill: #33322E;font-weight:normal;">id</text>
+  <text x="36.5" y="243" style="fill: #33322E;font-weight:normal;">name</text>
+  <text x="36.5" y="258" style="fill: #33322E;font-weight:normal;">password</text>
+  <text x="36.5" y="273" style="fill: #33322E;font-weight:normal;">email</text>
+  <text x="36.5" y="288" style="fill: #33322E;font-weight:normal;">id_role</text>
+  <rect x="13.5" y="337.5" height="92" width="121" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="74" y="359" style="fill: #33322E;text-anchor: middle;">ROLE</text>
+  <path d="M13.5 368.5 L134.5 368.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="21.5" y="390" style="fill: #33322E;font-weight:normal;">id</text>
+  <text x="21.5" y="405" style="fill: #33322E;font-weight:normal;">name</text>
+  <text x="21.5" y="420" style="fill: #33322E;font-weight:normal;">permissions</text>
+</svg>
