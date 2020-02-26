@@ -48,7 +48,6 @@ build/
 
 ### Eclipse ###
 *.pydevproject
-.project
 .metadata
 bin/**
 tmp/**
@@ -98,7 +97,6 @@ target/
 .apt_generated
 .classpath
 .factorypath
-.project
 .settings
 .springBeans
 .sts4-cache
