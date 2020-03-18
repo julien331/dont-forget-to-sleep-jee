@@ -96,7 +96,7 @@ target/
 
 ### STS ###
 .apt_generated
-.classpath
+#.classpath
 .project
 .factorypath
 .settings
