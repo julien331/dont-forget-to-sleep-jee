@@ -18,21 +18,21 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nom;
+    private String name;
 
     @ManyToMany(mappedBy = "roles", cascade = {CascadeType.ALL})
     private Set<User> users;
 
-	public Role(Long id, String nom, Set<User> users) {
+	public Role(Long id, String name, Set<User> users) {
 		super();
 		this.id = id;
-		this.nom = nom;
+		this.name = name;
 		this.users = users;
 	}
 
     public Role(Role other)
     {
-    	this(other.id, other.nom, other.users);
+    	this(other.id, other.name, other.users);
     }
     
     public Role()
@@ -48,12 +48,12 @@ public class Role {
 		this.id = id;
 	}
 
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String nom) {
+		this.name = nom;
 	}
 
 	public Set<User> getUsers() {

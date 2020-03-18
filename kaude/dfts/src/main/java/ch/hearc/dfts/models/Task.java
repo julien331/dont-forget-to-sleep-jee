@@ -30,6 +30,8 @@ public class Task {
 	public Task() 
 	{
 		super();
+		
+		this.done = false;
 	}
 	
 	public Task(Task other)

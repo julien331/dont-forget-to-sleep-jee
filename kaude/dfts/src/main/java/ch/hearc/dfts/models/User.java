@@ -20,24 +20,25 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nomUtilisateur;
-
-    private String motDePasse;
+    private String name;
+    private String password;
+    private String email;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     private Set<Role> roles;
 
-	public User(Long id, String nomUtilisateur, String motDePasse, Set<Role> roles) {
+	public User(Long id, String name, String password, String email, Set<Role> roles) {
 		super();
 		this.id = id;
-		this.nomUtilisateur = nomUtilisateur;
-		this.motDePasse = motDePasse;
+		this.name = name;
+		this.password = password;
+		this.email = email;
 		this.roles = roles;
 	}
 	
 	public User(User other)
 	{
-		this(other.id, other.nomUtilisateur, other.motDePasse, other.roles);
+		this(other.id, other.name, other.password, other.email, other.roles);
 	}
 	
 	public User()
@@ -53,20 +54,20 @@ public class User {
 		this.id = id;
 	}
 
-	public String getNomUtilisateur() {
-		return nomUtilisateur;
+	public String getName() {
+		return name;
 	}
 
-	public void setNomUtilisateur(String nomUtilisateur) {
-		this.nomUtilisateur = nomUtilisateur;
+	public void setName(String nomUtilisateur) {
+		this.name = nomUtilisateur;
 	}
 
-	public String getMotDePasse() {
-		return motDePasse;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setMotDePasse(String motDePasse) {
-		this.motDePasse = motDePasse;
+	public void setPassword(String motDePasse) {
+		this.password = motDePasse;
 	}
 
 	public Set<Role> getRoles() {
