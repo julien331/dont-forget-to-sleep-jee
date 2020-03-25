@@ -7,7 +7,8 @@
 		<meta name="description" content="Don't forget to sleep">
 		<meta name="author" content="nous">
 		
-		<link rel="stylesheet" href="css/styles.css?v=1.0">
+		<!-- Style perso pour les retouches -->
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 		
 		<!-- Ajout de Bootstrap4 -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -21,6 +22,23 @@
 			<div class="row">
 				<h1 class="text-center col-sm-12">Don't forget to sleep!</h1>
 				<h2 class="text-center col-sm-12">Liste des tâches</h2>
+			</div>
+			<div class="spacer border-bottom"></div>
+			<div class="row">
+				<div class="box col-sm-12 col-md-4 offset-md-4">
+					<div class="box-part">
+						<div class="card" > <!-- th:each="task : ${task_list}" -->
+							<div class="card-body">
+								<h4 class="card-title text-center">Titre</h4> <!-- th:text="${task.name}" -->
+								<p class="card-text">Description</p> <!-- th:text="${task.description}" -->
+								<span class="float-right">
+									<a href="#" class="btn btn-danger">Supprimer</a>
+									<a href="#" class="btn btn-success">Marquer comme terminée</a>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
