@@ -12,6 +12,4 @@ public class HomeController {
 	public String mainPage() {	
 		return "index";
 	}
-	
-	
 }
