@@ -96,7 +96,7 @@ target/
 
 ### STS ###
 .apt_generated
-#.classpath
+.classpath
 .project
 .factorypath
 .settings
@@ -104,7 +104,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+**.idea/
 *.iws
 *.iml
 *.ipr
