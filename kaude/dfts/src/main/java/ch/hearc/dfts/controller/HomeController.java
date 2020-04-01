@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch.hearc.dfts.models.Task;
-import ch.hearc.dfts.models.UserDetailServiceImpl;
 import ch.hearc.dfts.models.repositories.TaskRepository;
+import ch.hearc.dfts.models.services.UserDetailServiceImpl;
 
 
 @Controller

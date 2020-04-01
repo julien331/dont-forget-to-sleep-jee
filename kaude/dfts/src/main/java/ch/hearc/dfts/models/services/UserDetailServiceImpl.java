@@ -1,4 +1,4 @@
-package ch.hearc.dfts.models;
+package ch.hearc.dfts.models.services;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.hearc.dfts.models.Role;
 import ch.hearc.dfts.models.repositories.*;
 
 
@@ -26,11 +27,15 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	  @Transactional(readOnly = true)
 	  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	    ch.hearc.dfts.models.User hüsser = utilisateurRepository.findByName(username);
-	    if (hüsser == null) throw new UsernameNotFoundException(username);
-			Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-			for (Role role : hüsser.getRoles()){
-			    grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-			}
+	    
+	    if (hüsser == null)
+	    	throw new UsernameNotFoundException(username);
+	    
+		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+		for (Role role : hüsser.getRoles()){
+		    grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+		}
+		
 	    return new User(hüsser.getName(), hüsser.getPassword(), grantedAuthorities);
 	  }
 }
