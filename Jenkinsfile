@@ -8,7 +8,7 @@ pipeline {
           }
         }
         steps {
-          sh 'cd kaude/dfts && mvn clean package && ls target/'
+          sh 'cd kaude/dfts && mvn clean package'
           stash name: "app", includes: "**"
         }
       }
@@ -43,6 +43,12 @@ pipeline {
         }
 
       }*/
+      stage('DockerImageCreation') {
+          def app
+          app = docker.build("jojoc4/dont-forget-to-sleep-jee")
+          app.push("${env.BUILD_NUMBER}")
+          app.push("latest")
+      }
     }
     post {
       always {
