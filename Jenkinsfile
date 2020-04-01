@@ -8,8 +8,7 @@ pipeline {
           }
         }
         steps {
-          sh 'cd kaude/dfts'
-          sh '(mvn clean package)'
+          sh 'cd kaude/dfts && mvn clean package'
           stash name: "app", includes: "**"
         }
       }
@@ -21,8 +20,7 @@ pipeline {
         }
         steps {
           unstash "app"
-          sh 'cd kaude/dfts'
-          sh '(mvn clean test)'
+          sh 'cd kaude/dfts && mvn clean test'
           //sh '(mvn sonar:sonar -Dsonar.projectKey=bull0n_springwater -Dsonar.organization=bull0n-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=0916c4e7bc3cf93e96f97c679a7cde097309b43d)'
         }
       }
