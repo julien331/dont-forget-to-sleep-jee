@@ -26,19 +26,23 @@ public class User {
 
     @ManyToMany(cascade = {CascadeType.ALL})
     private Set<Role> roles;
+    
+    @ManyToMany(cascade = {CascadeType.ALL})
+    private Set<Task> tasks;
 
-	public User(Long id, String name, String password, String email, Set<Role> roles) {
+	public User(Long id, String name, String password, String email, Set<Role> roles, Set<Task> tasks) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.email = email;
 		this.roles = roles;
+		this.tasks = tasks;
 	}
 	
 	public User(User other)
 	{
-		this(other.id, other.name, other.password, other.email, other.roles);
+		this(other.id, other.name, other.password, other.email, other.roles, other.tasks);
 	}
 	
 	public User()
@@ -77,6 +81,12 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-	
-	
+
+	public Set<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(Set<Task> tasks) {
+		this.tasks = tasks;
+	}
 }

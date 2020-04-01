@@ -1,9 +1,13 @@
 package ch.hearc.dfts.models;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,12 +23,16 @@ public class Task {
 	
 	private boolean done;
 
-	public Task(long id, String name, String description, boolean done) {
+    @ManyToMany(mappedBy = "tasks", cascade = {CascadeType.ALL})
+    private Set<User> users;
+
+	public Task(long id, String name, String description, boolean done, Set<User> users) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.done = done;
+		this.users = users;
 	}
 	
 	public Task() 
@@ -36,7 +44,7 @@ public class Task {
 	
 	public Task(Task other)
 	{
-		this(other.id, other.name, other.description, other.done);
+		this(other.id, other.name, other.description, other.done, other.users);
 	}
 
 	public long getId() {
@@ -70,6 +78,13 @@ public class Task {
 	public void setDone(boolean done) {
 		this.done = done;
 	}
-	
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
 	
 }
