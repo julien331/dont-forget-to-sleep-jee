@@ -1,4 +1,9 @@
 pipeline {
+  environment {
+    registry = "jojoc4/dont-forget-to-sleep-jee"
+    registryCredential = 'dockerhubjojoc4'
+    dockerImage = ''
+  }
   agent any
   stages {
       stage('Build') {
@@ -43,11 +48,6 @@ pipeline {
         }
 
       }*/
-      environment {
-        registry = "jojoc4/dont-forget-to-sleep-jee"
-        registryCredential = 'dockerhubjojoc4'
-        dockerImage = ''
-      }
       stage('DockerImageCreation') {
           steps{
             unstash "app"
