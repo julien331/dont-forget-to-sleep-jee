@@ -44,7 +44,8 @@ pipeline {
 
       }*/
       stage('DockerImageCreation') {
-          unstash "app" docker.build("jojoc4/dont-forget-to-sleep-jee").push("${env.BUILD_NUMBER}").push("latest")
+          unstash "app" 
+          docker.build("jojoc4/dont-forget-to-sleep-jee").push("${env.BUILD_NUMBER}").push("latest")
       }
     }
     post {
