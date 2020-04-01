@@ -43,10 +43,21 @@ pipeline {
         }
 
       }*/
+      environment {
+        registry = "jojoc4/dont-forget-to-sleep-jee"
+        registryCredential = 'dockerhubjojoc4'
+        dockerImage = ''
+      }
       stage('DockerImageCreation') {
           steps{
-            unstash "app" 
-            docker.build("jojoc4/dont-forget-to-sleep-jee").push("${env.BUILD_NUMBER}").push("latest")
+            unstash "app"
+            script {
+              dockerImage = docker.build registry + ":$BUILD_NUMBER"
+              docker.withRegistry( '', registryCredential ) {
+                dockerImage.push()
+              }
+            }
+            sh "docker rmi $registry:$BUILD_NUMBER"
           }
       }
     }
