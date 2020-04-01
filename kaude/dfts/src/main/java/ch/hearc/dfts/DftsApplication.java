@@ -52,7 +52,7 @@ public class DftsApplication {
 		Set<Role> roles = new HashSet<>();
 		roles.add(role);
 		user.setRoles(roles);
-
+		
 		Task task1 = new Task();
 		task1.setName("Don't forget to sleep");
 		task1.setDescription("Dormir est très important pour la santé. Il est important de ne pas l'oublier, surtout avec la surcharge de travail imposée par la HE-Arc.");
