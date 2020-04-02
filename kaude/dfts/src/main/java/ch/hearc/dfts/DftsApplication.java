@@ -43,10 +43,10 @@ public class DftsApplication {
 	public void init() {
 		Role role = new Role();
 		role.setName("ROLE_ADMIN");
-		roleRepo.save(role);
 		
 		User user = new User();
 		user.setName("admin");
+		user.setEmail("asdasd@asd.net");
 		user.setPassword(bCryptPasswordEncoder.encode("1234"));
 		
 		Set<Role> roles = new HashSet<>();

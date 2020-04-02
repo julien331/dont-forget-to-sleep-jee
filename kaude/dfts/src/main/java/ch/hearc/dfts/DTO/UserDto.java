@@ -1,7 +1,9 @@
 package ch.hearc.dfts.DTO;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UserDto {
 	@NotNull
@@ -13,8 +15,8 @@ public class UserDto {
 	private String password;
 	private String matchingPassword;
 
-	@NotNull
-	@NotEmpty
+    @Email()
+    @NotEmpty()
 	private String email;
 
 	public String getName() {
@@ -48,5 +50,4 @@ public class UserDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 }
