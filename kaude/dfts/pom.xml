@@ -60,6 +60,11 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.0</version>
 		</dependency>
+		<dependency>
+	        <groupId>mysql</groupId>
+	        <artifactId>mysql-connector-java</artifactId>
+	        <scope>runtime</scope>
+	    </dependency>
 
 		<!-- spring security web -->
 		<dependency>
