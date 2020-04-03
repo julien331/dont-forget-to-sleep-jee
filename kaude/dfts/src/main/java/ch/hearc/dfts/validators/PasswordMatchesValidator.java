@@ -3,7 +3,7 @@ package ch.hearc.dfts.validators;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import ch.hearc.dfts.DTO.UserDto;
+import ch.hearc.dfts.dto.UserDto;
 
 /**
  * Source : baeldung

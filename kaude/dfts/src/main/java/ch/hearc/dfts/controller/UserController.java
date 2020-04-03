@@ -23,7 +23,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.hearc.dfts.SecurityConfiguration;
-import ch.hearc.dfts.DTO.UserDto;
+import ch.hearc.dfts.dto.UserDto;
 import ch.hearc.dfts.exceptions.MotDePasseException;
 import ch.hearc.dfts.models.Role;
 import ch.hearc.dfts.models.User;

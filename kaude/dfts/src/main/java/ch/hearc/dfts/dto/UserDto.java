@@ -1,4 +1,4 @@
-package ch.hearc.dfts.DTO;
+package ch.hearc.dfts.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
