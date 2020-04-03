@@ -26,7 +26,7 @@ public class TaskService {
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();
         } else {
-            return new ArrayList<Task>();
+            return new ArrayList<>();
         }
     }
 }

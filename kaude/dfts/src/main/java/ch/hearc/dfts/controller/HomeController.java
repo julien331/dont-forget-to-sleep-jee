@@ -35,7 +35,6 @@ public class HomeController {
 							@RequestParam(defaultValue="0") Integer page,
 							@RequestParam(defaultValue="3") Integer pageSize)
 	{
-//		Iterable<Task> task_list = taskRepo.findAll();
 		List<Task> taskList = taskService.getAllTasks(page, pageSize);
 		
 		int nbTasks = taskList.size();

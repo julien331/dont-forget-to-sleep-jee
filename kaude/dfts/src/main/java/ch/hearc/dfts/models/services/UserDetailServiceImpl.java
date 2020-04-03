@@ -26,16 +26,16 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	  @Override
 	  @Transactional(readOnly = true)
 	  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	    ch.hearc.dfts.models.User hüsser = utilisateurRepository.findByName(username);
+	    ch.hearc.dfts.models.User husser = utilisateurRepository.findByName(username);
 	    
-	    if (hüsser == null)
+	    if (husser == null)
 	    	throw new UsernameNotFoundException(username);
 	    
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-		for (Role role : hüsser.getRoles()){
+		for (Role role : husser.getRoles()){
 		    grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 		}
 		
-	    return new User(hüsser.getName(), hüsser.getPassword(), grantedAuthorities);
+	    return new User(husser.getName(), husser.getPassword(), grantedAuthorities);
 	  }
 }
