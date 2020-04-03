@@ -18,8 +18,8 @@ public class TaskService {
 	@Autowired
     TaskRepository taskRepo;
      
-    public List<Task> getAllTasks(Integer pageNo, Integer pageSize) {
-        Pageable paging = PageRequest.of(pageNo, pageSize);
+    public List<Task> getAllTasks(Integer page, Integer pageSize) {
+        Pageable paging = PageRequest.of(page, pageSize);
  
         Page<Task> pagedResult = taskRepo.findAll(paging);
          

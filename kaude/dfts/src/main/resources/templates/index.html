@@ -15,8 +15,31 @@
 				<h1 class="text-center col-sm-12">Don't forget to sleep!</h1>
 				<h2 class="text-center col-sm-12">Liste des tâches</h2>
 			</div>
-			<!-- Content -->
+			
 			<div class="spacer border-bottom"></div>
+			
+			<!-- Pagination -->
+			<nav aria-label="Pagination des tâches">
+				<ul class="pagination justify-content-center">
+					<li class="page-item">
+						<a class="page-link" href="#" aria-label="Précédent">
+							<span aria-hidden="true">&laquo;</span>
+							<span class="sr-only">Précédent</span>
+						</a>
+					</li>
+					<li class="page-item" th:each="p : ${pages}">
+						<a class="page-link" th:href="@{/(page=${p-1})}" th:text="${p}"></a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#" aria-label="Suivant">
+							<span aria-hidden="true">&raquo;</span>
+							<span class="sr-only">Suivant</span>
+						</a>
+					</li>
+				</ul>
+			</nav>
+			
+			<!-- Content -->
 			<div class="row">
 				<div class="box col-sm-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4 ">
 					<div class="box-part">

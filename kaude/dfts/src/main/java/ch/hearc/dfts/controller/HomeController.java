@@ -1,5 +1,10 @@
 package ch.hearc.dfts.controller;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,12 +32,19 @@ public class HomeController {
 	@GetMapping
 	public String mainPage(
 							Model model,
-							@RequestParam(defaultValue="0") Integer pageNo,
+							@RequestParam(defaultValue="0") Integer page,
 							@RequestParam(defaultValue="3") Integer pageSize)
 	{
 //		Iterable<Task> task_list = taskRepo.findAll();
-		Iterable<Task> task_list = taskService.getAllTasks(pageNo, pageSize);
-		model.addAttribute("task_list", task_list);
+		List<Task> taskList = taskService.getAllTasks(page, pageSize);
+		
+		int nbTasks = taskList.size();
+		int nbPages = ((nbTasks % pageSize) == 0) ? nbTasks/pageSize : nbTasks/pageSize + 1;
+		
+		List<Integer> pages = IntStream.range(1, nbPages+1).boxed().collect(Collectors.toList());
+		
+		model.addAttribute("task_list", taskList);
+		model.addAttribute("pages", pages);
 		//model.addAttribute("user", utilisateurService.loadCurrentUser());
 		
 		return "index";
