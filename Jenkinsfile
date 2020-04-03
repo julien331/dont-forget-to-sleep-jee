@@ -27,7 +27,7 @@ pipeline {
           unstash "app"
           sh 'cd kaude/dfts && mvn clean test'
           //TODO julien
-          //sh '(mvn sonar:sonar -Dsonar.projectKey=bull0n_springwater -Dsonar.organization=bull0n-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=0916c4e7bc3cf93e96f97c679a7cde097309b43d)'
+          sh '(mvn sonar:sonar -Dsonar.projectKey=julien331_dont-forget-to-sleep-jee -Dsonar.organization=spring-qdl-ekipe -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=51c596b64d3f51e4a40063d0e90369992df408fb)'
         }
       }
       /*stage('IntegrationTest'){
