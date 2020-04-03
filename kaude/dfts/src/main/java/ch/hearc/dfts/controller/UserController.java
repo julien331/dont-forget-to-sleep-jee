@@ -6,21 +6,18 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.ModelAndView;
 
 import ch.hearc.dfts.SecurityConfiguration;
 import ch.hearc.dfts.dto.UserDto;
@@ -35,10 +32,10 @@ public class UserController {
 
 	@Autowired
 	UserRepository userRepo;
-	
+
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@Autowired
 	RoleRepository roleRepo;
 
@@ -48,7 +45,6 @@ public class UserController {
 	private static final String REGISTRATION_FORM_PATH = "registration/registration.html";
 	private static final String INDEX_PATH = "redirect:/";
 	private static final String LOGIN_PATH = "redirect:/login";
-	
 
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String showRegistrationForm(WebRequest request, Model model) {
@@ -56,11 +52,6 @@ public class UserController {
 		model.addAttribute("user", userDto);
 		return REGISTRATION_FORM_PATH;
 	}
-	
-	@Autowired
-    @Lazy
-    AuthenticationManager authManager;
-	
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String addPersonne(@Valid UserDto userDTO, BindingResult result, Model model) {
@@ -68,9 +59,9 @@ public class UserController {
 		if (result.hasErrors()) {
 			return REGISTRATION_FORM_PATH;
 		}
-		
+
 		User newUser = null;
-		
+
 		try {
 			newUser = verifiyInput(userDTO);
 		} catch (MotDePasseException e) {
@@ -79,50 +70,37 @@ public class UserController {
 
 			model.addAttribute("user", userDTO);
 			model.addAttribute("erreur", e.getMessage());
-			
+
 			return REGISTRATION_FORM_PATH;
 		}
-		
-		
-		
+
 		Role roleUser = roleRepo.findByName("ROLE_ADMIN");
 
-		
-		System.out.println(newUser.toString());
 		Set<Role> rolesUser = new HashSet<>();
 		rolesUser.add(roleUser);
 		newUser.setRoles(rolesUser);
 
 		userRepo.save(newUser);
 
-		
-		User fetchedUser = userRepo.findByName(newUser.getName());
-		System.out.println(fetchedUser);
-		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(fetchedUser.getName(), fetchedUser.getPassword() );
+		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(newUser.getName(),
+				userDTO.getPassword());
 
+		try {
+			securityConfig.authenticationManagerBean().authenticate(authToken);
+			SecurityContext sc = SecurityContextHolder.getContext();
+			sc.setAuthentication(authToken);
 
-//		System.out.println(authToken.isAuthenticated());
-//		try
-//		{
-//			securityConfig.authenticationManagerBean().authenticate(authToken);
-//		}
-//		catch (Exception e)
-//		{
-//			System.out.println(e);
-//			model.addAttribute("user", userDTO);
-//			return REGISTRATION_FORM_PATH;
-//		}
-//
-//		if(authToken.isAuthenticated())
-//		{
-//			SecurityContextHolder.getContext().setAuthentication(authToken);
-//		}
+		} catch (Exception e) {
+			System.out.println(e);
+			model.addAttribute("user", userDTO);
+			return REGISTRATION_FORM_PATH;
+		}
 
-		return LOGIN_PATH;
+		return INDEX_PATH;
 	}
 
 	private User verifiyInput(UserDto userDTO) throws MotDePasseException {
-		
+
 		if (!(userDTO.getPassword().equals(userDTO.getMatchingPassword()))) {
 			throw new MotDePasseException("Les mots de passe ne correspondent pas");
 		}

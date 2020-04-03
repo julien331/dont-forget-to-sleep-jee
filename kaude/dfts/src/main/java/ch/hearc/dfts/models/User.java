@@ -14,8 +14,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 @Entity
 @Table(name = "tbl_users")
 public class User {
@@ -27,7 +25,7 @@ public class User {
 	@NotEmpty
 	@Column(unique = true, length = 50)
 	private String name;
-	
+
 	@NotNull
 	@NotEmpty
 	private String password;
@@ -41,28 +39,6 @@ public class User {
 
 	@ManyToMany(cascade = { CascadeType.ALL })
 	private Set<Task> tasks;
-
-	public User(Long id, String name, String password, String email, Set<Role> roles, Set<Task> tasks) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.password = password;
-		this.email = email;
-		this.roles = roles;
-		this.tasks = tasks;
-	}
-
-	public User(User other) {
-		this(other.id, other.name, other.password, other.email, other.roles, other.tasks);
-	}
-
-	public User() {
-		super();
-		this.name = "toto";
-		
-		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		this.password = bCryptPasswordEncoder.encode("toto");
-	}
 
 	public Long getId() {
 		return id;
@@ -116,6 +92,22 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", password=" + password + ", email=" + email
 				+ ", confirmationToken=, roles=" + roles + ", tasks=" + tasks + "]";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof User) {
+			User toCompare = (User) o;
+
+			return toCompare.id == this.id;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return this.id.hashCode();
 	}
 
 }

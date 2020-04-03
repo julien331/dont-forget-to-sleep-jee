@@ -30,10 +30,6 @@ public class DftsApplication {
 	@Autowired
 	TaskRepository taskRepo;
 	
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(DftsApplication.class, args);
