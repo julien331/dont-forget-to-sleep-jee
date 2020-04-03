@@ -27,7 +27,7 @@ public class TaskController {
 		
 		Optional<Task> task = taskRepo.findById(id);
 
-		if(task != null)
+		if(task.isPresent())
 		{
 			Task t = task.get();
 			t.setDone(true);

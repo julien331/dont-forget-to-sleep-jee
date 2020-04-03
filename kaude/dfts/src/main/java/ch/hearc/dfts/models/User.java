@@ -59,6 +59,7 @@ public class User {
 
 	public User() {
 		super();
+		this.name = "toto";
 	}
 
 	public Long getId() {
