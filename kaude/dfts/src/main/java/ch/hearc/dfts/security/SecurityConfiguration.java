@@ -1,7 +1,8 @@
-package ch.hearc.dfts;
+package ch.hearc.dfts.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,10 +32,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     		.antMatchers("/", "/home").access("hasRole('ADMIN')")
     		.antMatchers("/admin/**").hasRole("ADMIN")
     		.and()
-    		// some more method calls
     		.formLogin();
     	
     	http.csrf().disable();
     	http.headers().frameOptions().disable();
+	}
+    
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+	    return super.authenticationManagerBean();
 	}
 }

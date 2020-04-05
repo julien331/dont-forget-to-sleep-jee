@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -17,6 +18,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "tbl_users")
 public class User {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -29,16 +31,27 @@ public class User {
 	@NotNull
 	@NotEmpty
 	private String password;
+	private String matchingPassword;
 
 	@Column(unique = true, length = 100)
-	@Email(message = "Entrer une adresse courriel valide")
+	@Email()
 	private String email;
+	
+	@Column(name = "enabled")
+	private boolean enabled;
 
 	@ManyToMany(cascade = { CascadeType.ALL })
 	private Set<Role> roles;
 
 	@ManyToMany(cascade = { CascadeType.ALL })
 	private Set<Task> tasks;
+
+
+
+	public User() {
+		super();
+		this.enabled = false;
+	}
 
 	public Long getId() {
 		return id;
@@ -86,6 +99,22 @@ public class User {
 
 	public void setTasks(Set<Task> tasks) {
 		this.tasks = tasks;
+	}
+
+	public String getMatchingPassword() {
+		return matchingPassword;
+	}
+
+	public void setMatchingPassword(String matchingPassword) {
+		this.matchingPassword = matchingPassword;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	@Override

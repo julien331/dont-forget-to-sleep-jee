@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<object th:include="head :: head" th:remove="tag" />
+	<title>Don't forget to sleep</title>
+</head>
+	<body>
+		<div th:insert="nav"></div>
+		<div class="container-fluid h-100">
+			<div class="row justify-content-center align-items-center h-100">
+				<div class="col-12 col-sm-10 col-md-7 col-lg-6 col-xl-5">
+					<div class="card">
+						<div class="card-header">Erreur lors de la validation du compte</div>
+						<div class="card-body">
+							<p class="alert alert-danger" th:text="${message}">error</p>
+							<a class="btn btn-primary"th:href="@{/signup}">S'inscrire</a>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</body>
+</html>

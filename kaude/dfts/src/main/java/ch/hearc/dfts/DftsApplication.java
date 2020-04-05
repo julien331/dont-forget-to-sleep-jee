@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
+
 import ch.hearc.dfts.models.Role;
 import ch.hearc.dfts.models.Task;
 import ch.hearc.dfts.models.User;
@@ -19,6 +21,7 @@ import ch.hearc.dfts.models.repositories.TaskRepository;
 import ch.hearc.dfts.models.repositories.UserRepository;
 
 @SpringBootApplication
+
 public class DftsApplication {
 
 	@Autowired
@@ -43,6 +46,7 @@ public class DftsApplication {
 		User user = new User();
 		user.setName("admin");
 		user.setEmail("asdasd@asd.net");
+		user.setEnabled(true);
 		user.setPassword(bCryptPasswordEncoder.encode("1234"));
 		
 		Set<Role> roles = new HashSet<>();
