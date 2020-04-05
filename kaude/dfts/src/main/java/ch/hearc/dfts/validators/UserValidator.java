@@ -8,6 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import ch.hearc.dfts.dto.UserDto;
 import ch.hearc.dfts.models.User;
 import ch.hearc.dfts.models.services.UserService;
 
@@ -23,7 +24,7 @@ public class UserValidator implements Validator {
 
 	@Override
 	public void validate(Object o, Errors errors) {
-		User user = (User) o;
+		UserDto user = (UserDto) o;
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty");
 		if (user.getName().length() < 6 || user.getName().length() > 32) {

@@ -73,15 +73,17 @@ public class UserController {
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 
-	public ModelAndView registerUserAccount(@ModelAttribute("user") @Valid User user, BindingResult result,
-			WebRequest request, Errors errors) {
+	public ModelAndView registerUserAccount(@Valid UserDto userDto, BindingResult result, WebRequest request,
+			Errors errors) {
 
-		userValidator.validate(user, result);
+		userValidator.validate(userDto, result);
 
 		if (result.hasErrors()) {
 
-			return new ModelAndView(REGISTRATION_FORM_PATH, "user", user);
+			return new ModelAndView(REGISTRATION_FORM_PATH, "user", userDto);
 		}
+
+		User user = new User(userDto);
 
 		userService.save(user);
 

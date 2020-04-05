@@ -15,6 +15,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import ch.hearc.dfts.dto.UserDto;
+
 @Entity
 @Table(name = "tbl_users")
 public class User {
@@ -31,12 +33,11 @@ public class User {
 	@NotNull
 	@NotEmpty
 	private String password;
-	private String matchingPassword;
 
 	@Column(unique = true, length = 100)
 	@Email()
 	private String email;
-	
+
 	@Column(name = "enabled")
 	private boolean enabled;
 
@@ -46,11 +47,17 @@ public class User {
 	@ManyToMany(cascade = { CascadeType.ALL })
 	private Set<Task> tasks;
 
-
-
 	public User() {
 		super();
 		this.enabled = false;
+	}
+
+	public User(UserDto userDto) {
+		super();
+		this.enabled = false;
+		this.name = userDto.getName();
+		this.email = userDto.getEmail();
+		this.password = userDto.getPassword();
 	}
 
 	public Long getId() {
@@ -99,14 +106,6 @@ public class User {
 
 	public void setTasks(Set<Task> tasks) {
 		this.tasks = tasks;
-	}
-
-	public String getMatchingPassword() {
-		return matchingPassword;
-	}
-
-	public void setMatchingPassword(String matchingPassword) {
-		this.matchingPassword = matchingPassword;
 	}
 
 	public boolean isEnabled() {

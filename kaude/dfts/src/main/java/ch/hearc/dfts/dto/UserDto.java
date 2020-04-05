@@ -15,8 +15,7 @@ public class UserDto {
 	private String password;
 	private String matchingPassword;
 
-    @Email()
-    @NotEmpty()
+	@NotEmpty()
 	private String email;
 
 	public String getName() {
