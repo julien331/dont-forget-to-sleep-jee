@@ -9,16 +9,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import ch.hearc.dfts.dto.UserDto;
 
 @Entity
 @Table(name = "tbl_users")
 public class User {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -27,14 +29,17 @@ public class User {
 	@NotEmpty
 	@Column(unique = true, length = 50)
 	private String name;
-	
+
 	@NotNull
 	@NotEmpty
 	private String password;
 
 	@Column(unique = true, length = 100)
-	@Email(message = "Entrer une adresse courriel valide")
+	@Email()
 	private String email;
+
+	@Column(name = "enabled")
+	private boolean enabled;
 
 	@ManyToMany(cascade = { CascadeType.ALL })
 	private Set<Role> roles;
@@ -42,26 +47,17 @@ public class User {
 	@ManyToMany(cascade = { CascadeType.ALL })
 	private Set<Task> tasks;
 
-	public User(Long id, String name, String password, String email, Set<Role> roles, Set<Task> tasks) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.password = password;
-		this.email = email;
-		this.roles = roles;
-		this.tasks = tasks;
-	}
-
-	public User(User other) {
-		this(other.id, other.name, other.password, other.email, other.roles, other.tasks);
-	}
-
 	public User() {
 		super();
-		this.name = "toto";
-		
-		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		this.password = bCryptPasswordEncoder.encode("toto");
+		this.enabled = false;
+	}
+
+	public User(UserDto userDto) {
+		super();
+		this.enabled = false;
+		this.name = userDto.getName();
+		this.email = userDto.getEmail();
+		this.password = userDto.getPassword();
 	}
 
 	public Long getId() {
@@ -112,10 +108,34 @@ public class User {
 		this.tasks = tasks;
 	}
 
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", password=" + password + ", email=" + email
 				+ ", confirmationToken=, roles=" + roles + ", tasks=" + tasks + "]";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof User) {
+			User toCompare = (User) o;
+
+			return toCompare.id == this.id;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return this.id.hashCode();
 	}
 
 }

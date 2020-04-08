@@ -1,54 +1,68 @@
 package ch.hearc.dfts.controller;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.Calendar;
+import java.util.Locale;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.hearc.dfts.SecurityConfiguration;
 import ch.hearc.dfts.dto.UserDto;
-import ch.hearc.dfts.exceptions.MotDePasseException;
-import ch.hearc.dfts.models.Role;
 import ch.hearc.dfts.models.User;
+import ch.hearc.dfts.models.VerificationToken;
 import ch.hearc.dfts.models.repositories.RoleRepository;
 import ch.hearc.dfts.models.repositories.UserRepository;
+import ch.hearc.dfts.models.services.IUserService;
+import ch.hearc.dfts.models.services.UserService;
+import ch.hearc.dfts.registration.OnRegistrationCompleteEvent;
+import ch.hearc.dfts.security.SecurityConfiguration;
+import ch.hearc.dfts.validators.UserValidator;
 
 @Controller
 public class UserController {
 
 	@Autowired
 	UserRepository userRepo;
-	
+
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@Autowired
 	RoleRepository roleRepo;
 
 	@Autowired
 	SecurityConfiguration securityConfig;
 
+	@Autowired
+	private UserValidator userValidator;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	ApplicationEventPublisher eventPublisher;
+
+	@Autowired
+	private MessageSource messages;
+
+	@Autowired
+	private IUserService service;
+
 	private static final String REGISTRATION_FORM_PATH = "registration/registration.html";
 	private static final String INDEX_PATH = "redirect:/";
 	private static final String LOGIN_PATH = "redirect:/login";
-	
 
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String showRegistrationForm(WebRequest request, Model model) {
@@ -56,83 +70,57 @@ public class UserController {
 		model.addAttribute("user", userDto);
 		return REGISTRATION_FORM_PATH;
 	}
-	
-	@Autowired
-    @Lazy
-    AuthenticationManager authManager;
-	
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String addPersonne(@Valid UserDto userDTO, BindingResult result, Model model) {
+
+	public ModelAndView registerUserAccount(@Valid UserDto userDto, BindingResult result, WebRequest request,
+			Errors errors) {
+
+		userValidator.validate(userDto, result);
 
 		if (result.hasErrors()) {
-			return REGISTRATION_FORM_PATH;
+
+			return new ModelAndView(REGISTRATION_FORM_PATH, "user", userDto);
 		}
-		
-		User newUser = null;
-		
+
+		User user = new User(userDto);
+
+		userService.save(user);
+
 		try {
-			newUser = verifiyInput(userDTO);
-		} catch (MotDePasseException e) {
-			userDTO.setPassword("");
-			userDTO.setMatchingPassword("");
-
-			model.addAttribute("user", userDTO);
-			model.addAttribute("erreur", e.getMessage());
-			
-			return REGISTRATION_FORM_PATH;
+			String appUrl = request.getContextPath();
+			eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), appUrl));
+		} catch (Exception me) {
+			System.out.println(me.getMessage());
+			return new ModelAndView("registration/emailError", "user", user);
 		}
-		
-		
-		
-		Role roleUser = roleRepo.findByName("ROLE_ADMIN");
-
-		
-		System.out.println(newUser.toString());
-		Set<Role> rolesUser = new HashSet<>();
-		rolesUser.add(roleUser);
-		newUser.setRoles(rolesUser);
-
-		userRepo.save(newUser);
-
-		
-		User fetchedUser = userRepo.findByName(newUser.getName());
-		System.out.println(fetchedUser);
-		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(fetchedUser.getName(), fetchedUser.getPassword() );
-
-
-//		System.out.println(authToken.isAuthenticated());
-//		try
-//		{
-//			securityConfig.authenticationManagerBean().authenticate(authToken);
-//		}
-//		catch (Exception e)
-//		{
-//			System.out.println(e);
-//			model.addAttribute("user", userDTO);
-//			return REGISTRATION_FORM_PATH;
-//		}
-//
-//		if(authToken.isAuthenticated())
-//		{
-//			SecurityContextHolder.getContext().setAuthentication(authToken);
-//		}
-
-		return LOGIN_PATH;
+		return new ModelAndView("registration/successRegister", "user", user);
 	}
 
-	private User verifiyInput(UserDto userDTO) throws MotDePasseException {
-		
-		if (!(userDTO.getPassword().equals(userDTO.getMatchingPassword()))) {
-			throw new MotDePasseException("Les mots de passe ne correspondent pas");
+	@GetMapping("/registrationConfirm")
+	public String confirmRegistration(WebRequest request, Model model, @RequestParam("token") String token) {
+
+		Locale locale = request.getLocale();
+
+		VerificationToken verificationToken = service.getVerificationToken(token);
+
+		if (verificationToken == null) {
+			String message = messages.getMessage("auth.message.invalidToken", null, locale);
+			model.addAttribute("message", message);
+			return "registration/badUser";
 		}
-		User userToAdd = new User();
 
-		userToAdd.setEmail(userDTO.getEmail());
-		userToAdd.setName(userDTO.getName());
-		userToAdd.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+		User user = verificationToken.getUser();
+		Calendar cal = Calendar.getInstance();
+		if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+			String messageValue = messages.getMessage("auth.message.expired", null, locale);
+			model.addAttribute("message", messageValue);
+			return "registration/badUser";
+		}
 
-		return userToAdd;
+		user.setEnabled(true);
+		service.saveRegisteredUser(user);
+		return LOGIN_PATH;
 	}
 
 }

@@ -1,5 +1,6 @@
 package ch.hearc.dfts.models;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,14 +14,17 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tbl_roles")
 public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String name;
+	private String name;
 
-    @ManyToMany(mappedBy = "roles", cascade = {CascadeType.ALL})
-    private Set<User> users;
+	@ManyToMany(mappedBy = "roles", cascade = { CascadeType.ALL })
+	private Set<User> users;
+
+	@ManyToMany(mappedBy = "roles")
+	private Set<Privilege> privileges;
 
 	public Role(Long id, String name, Set<User> users) {
 		super();
@@ -29,15 +33,13 @@ public class Role {
 		this.users = users;
 	}
 
-    public Role(Role other)
-    {
-    	this(other.id, other.name, other.users);
-    }
-    
-    public Role()
-    {
-    	this(0l, "Sous-merde", null);
-    }
+	public Role(Role other) {
+		this(other.id, other.name, other.users);
+	}
+
+	public Role() {
+		this(0l, "Sous-merde", null);
+	}
 
 	public Long getId() {
 		return id;
@@ -61,6 +63,14 @@ public class Role {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+
+	public Collection<Privilege> getPrivileges() {
+		return privileges;
+	}
+
+	public void setPrivileges(final Set<Privilege> privileges) {
+		this.privileges = privileges;
 	}
 
 }
