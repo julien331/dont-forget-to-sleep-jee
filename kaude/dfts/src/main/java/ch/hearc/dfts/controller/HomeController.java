@@ -33,7 +33,8 @@ public class HomeController {
 	public String mainPage(
 							Model model,
 							@RequestParam(defaultValue="0") Integer page,
-							@RequestParam(defaultValue="3") Integer pageSize)
+							@RequestParam(defaultValue="3") Integer pageSize,
+							@RequestParam(defaultValue="false") Boolean showFinished)
 	{
 		List<Task> taskList = taskService.getAllTasks(page, pageSize);
 		
@@ -44,6 +45,7 @@ public class HomeController {
 		
 		model.addAttribute("task_list", taskList);
 		model.addAttribute("pages", pages);
+		model.addAttribute("show_finished", showFinished);
 		//model.addAttribute("user", utilisateurService.loadCurrentUser());
 		
 		return "index";

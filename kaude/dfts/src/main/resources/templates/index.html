@@ -18,6 +18,17 @@
 			
 			<div class="spacer border-bottom"></div>
 			
+			<!-- Filtre -->
+			<div class="row">
+				<div class="col-sm-12 col-md-6 col-lg-4 offset-md-3 offset-lg-4 form-inline">
+					<div class="form-check">
+						<input type="checkbox" name="finished_tasks" id="finished_tasks" class="form-check-input" 
+								th:checked="${show_finished}" onclick="toggle_finished()">
+						<label for="finished_tasks" class="form-check-label">Afficher les tâches terminées</label>
+					</div>
+				</div>
+			</div>
+			
 			<!-- Pagination -->
 			<nav aria-label="Pagination des tâches">
 				<ul class="pagination justify-content-center">
@@ -44,7 +55,7 @@
 				<div class="box col-sm-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4 ">
 					<div class="box-part">
 						
-						<div class="card add-space-bottom" th:each="task : ${task_list}"> <!-- th:each="task : ${task_list}" -->
+						<div class="card add-space-bottom" th:each="task : ${task_list}" th:if="${not task.done or show_finished}"> <!-- th:each="task : ${task_list}" -->
 							<div class="card-body">
 								<h4 class="card-title text-center" th:text="${task.name}">Titre</h4> <!-- th:text="${task.name}" -->
 								<p class="card-text" th:text="${task.description}">Description</p> <!-- th:text="${task.description}" -->
@@ -59,5 +70,11 @@
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript">
+		function toggle_finished()
+		{
+				window.location = "/?showFinished=" + (document.getElementById('finished_tasks').checked).toString();
+		}
+		</script>
 	</body>
 </html>
