@@ -50,6 +50,8 @@ public class User {
 	public User() {
 		super();
 		this.enabled = false;
+		this.name = "Toto";
+		this.password = "Jämes";
 	}
 
 	public User(UserDto userDto) {
