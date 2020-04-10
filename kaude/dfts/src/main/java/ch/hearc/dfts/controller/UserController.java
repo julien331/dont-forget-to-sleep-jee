@@ -1,7 +1,11 @@
 package ch.hearc.dfts.controller;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,22 +69,34 @@ public class UserController {
 	private static final String INDEX_PATH = "redirect:/";
 	private static final String LOGIN_PATH = "redirect:/login";
 
+	@RequestMapping(value="/login", method = RequestMethod.GET )
+	public String loginPage(WebRequest request, Model model) {
+		return "registration/login";
+	}
+
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String showRegistrationForm(WebRequest request, Model model) {
 		UserDto userDto = new UserDto();
-		model.addAttribute("user", userDto);
+		model.addAttribute("userDto", userDto);
 		return REGISTRATION_FORM_PATH;
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ModelAndView registerUserAccount(@Valid UserDto userDto, BindingResult result, WebRequest request,
-			Errors errors) {
+	public ModelAndView registerUserAccount(@Valid UserDto userDto, BindingResult result, WebRequest request) {
 
 		userValidator.validate(userDto, result);
 
 		if (result.hasErrors()) {
-
-			return new ModelAndView(REGISTRATION_FORM_PATH, "user", userDto);
+			ModelAndView modelAndView =  new ModelAndView(REGISTRATION_FORM_PATH, "userDto",userDto);
+			
+			List<String> errorCodesList = new ArrayList<String>();
+			
+			for(ObjectError err : result.getAllErrors()) {
+				errorCodesList.add(err.getCode());
+			}
+			
+			modelAndView.addObject("errors", errorCodesList);
+			return modelAndView;
 		}
 
 		User user = new User(userDto);

@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     		.antMatchers("/", "/home").access("hasRole('ADMIN')")
     		.antMatchers("/admin/**").hasRole("ADMIN")
     		.and()
-    		.formLogin();
+    		.formLogin().loginPage("/login").permitAll();
     	
     	http.csrf().disable();
     	http.headers().frameOptions().disable();

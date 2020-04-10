@@ -28,29 +28,29 @@ public class UserValidator implements Validator {
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty");
 		if (user.getName().length() < 6 || user.getName().length() > 32) {
-			errors.rejectValue("name", "Size.userForm.name");
+			errors.rejectValue("name", "Le nom d'utilisateur doit être comprise entre 6 et 32 caractères");
 		}
 
 		if (userService.findByName(user.getName()) != null) {
-			errors.rejectValue("name", "Duplicate.userForm.name");
+			errors.rejectValue("name", "Le nom d'utilisateur déjà utilisé");
 		}
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
 		if (userService.findByEmail(user.getEmail()) != null) {
-			errors.rejectValue("email", "Duplicate.userForm.email");
+			errors.rejectValue("email", "L'adresse courriel déja utilisée");
 		}
 		
 		if(!this.isValidEmail(user.getEmail())) {
-			errors.rejectValue("email", "Malformed.userForm.email");
+			errors.rejectValue("email", "L'adresse courriel malformée");
 		}
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
 		if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
-			errors.rejectValue("password", "Size.userForm.password");
+			errors.rejectValue("password", "La longueur du mot de passe doit être comprise entre 8 et 32 caractères");
 		}
 
 		if (!user.getMatchingPassword().equals(user.getPassword())) {
-			errors.rejectValue("matchingPassword", "Diff.userForm.passwordConfirm");
+			errors.rejectValue("password", "Les mots de passe ne sont pas identique");
 		}
 	}
 

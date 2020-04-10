@@ -1,14 +1,22 @@
 <nav class="navbar navbar-dark bg-dark add-space-bottom navbar-expand-md">
-	<a class="navbar-brand" th:href="@{/}">Don't forget to sleep</a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-	  	<span class="navbar-toggler-icon"></span>
-	</button>
+	<div class="container-fluid">
+		<a class="navbar-brand" th:href="@{/}">Don't forget to sleep</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		  	<span class="navbar-toggler-icon"></span>
+		</button>
 
-	<div class="collapse navbar-collapse" id="navbarNav">
-		<ul class="navbar-nav">
-			<li class="nav-item">
-				<a class="nav-link" th:href="@{/task}">Créer une tâche</a>
-			</li>
-		</ul>
-	</div>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li sec:authorize="isAuthenticated()" class="nav-item">
+					<a class="nav-link" th:href="@{/task}">Créer une tâche</a>
+				</li>
+			</ul>
+		</div>
+        <div sec:authorize="isAuthenticated()" class="dropdown">
+	        <a class="text-white" th:href="@{/logout}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+		<div sec:authorize="!isAuthenticated()" class="dropdown">
+	        <a class="text-white" th:href="@{/signup}"><i class="fas fa-sign-in-alt"></i> Inscription</a>
+        </div>   
+    </div>
 </nav>
