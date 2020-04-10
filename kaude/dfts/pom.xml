@@ -90,7 +90,7 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 		
-				<!-- intégration avec thymeleaf -->
+		<!-- intégration avec thymeleaf -->
 		<dependency>
         <groupId>com.github.ulisesbocchio</groupId>
         <artifactId>jasypt-spring-boot</artifactId>
