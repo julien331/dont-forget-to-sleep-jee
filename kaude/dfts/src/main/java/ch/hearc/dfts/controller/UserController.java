@@ -72,7 +72,6 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-
 	public ModelAndView registerUserAccount(@Valid UserDto userDto, BindingResult result, WebRequest request,
 			Errors errors) {
 

@@ -10,7 +10,7 @@ public interface IUserService {
 
 	User findByEmail(String email);
 
-	User registerNewUserAccount(User accountDto) throws Exception;
+	//User registerNewUserAccount(User accountDto) throws Exception;
 
 	User getUser(String verificationToken);
 
