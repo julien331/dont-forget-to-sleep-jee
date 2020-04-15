@@ -21,7 +21,6 @@ import ch.hearc.dfts.models.repositories.TaskRepository;
 import ch.hearc.dfts.models.repositories.UserRepository;
 
 @SpringBootApplication
-
 public class DftsApplication {
 
 	@Autowired
@@ -40,18 +39,19 @@ public class DftsApplication {
 	
 	@PostConstruct
 	public void init() {
-		Role role = new Role();
-		role.setName("ROLE_ADMIN");
+		//Admin and his tasks
+		Role roleAdmin = new Role();
+		roleAdmin.setName("ROLE_ADMIN");
 		
-		User user = new User();
-		user.setName("admin");
-		user.setEmail("asdasd@asd.net");
-		user.setEnabled(true);
-		user.setPassword(bCryptPasswordEncoder.encode("1234"));
+		User admin = new User();
+		admin.setName("admin");
+		admin.setEmail("asdasd@asd.net");
+		admin.setEnabled(true);
+		admin.setPassword(bCryptPasswordEncoder.encode("1234"));
 		
 		Set<Role> roles = new HashSet<>();
-		roles.add(role);
-		user.setRoles(roles);
+		roles.add(roleAdmin);
+		admin.setRoles(roles);
 		
 		Task task1 = new Task();
 		task1.setName("Don't forget to sleep");
@@ -66,7 +66,32 @@ public class DftsApplication {
 		tasks.add(task1);
 		tasks.add(task2);
 		
-		user.setTasks(tasks);
+		admin.setTasks(tasks);
+		userRepo.save(admin);
+		
+		//User and his tasks
+		Role roleUser = new Role();
+		roleUser.setName("ROLE_USER");
+		
+		User user = new User();
+		user.setName("toto");
+		user.setEmail("toto@asd.net");
+		user.setEnabled(true);
+		user.setPassword(bCryptPasswordEncoder.encode("1234"));
+		
+		Set<Role> rolesUser = new HashSet<>();
+		rolesUser.add(roleUser);
+		user.setRoles(rolesUser);
+		
+		Task task3 = new Task();
+		task3.setName("Préparer une révolution communiste");
+		task3.setDescription("Pour Lénine !");
+		task3.setDone(false);
+		
+		Set<Task> tasksUser = new HashSet<>();
+		tasksUser.add(task3);
+		
+		user.setTasks(tasksUser);
 		userRepo.save(user);
 	}
 

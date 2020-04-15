@@ -36,7 +36,7 @@ public class HomeController {
 							@RequestParam(defaultValue="3") Integer pageSize,
 							@RequestParam(defaultValue="false") Boolean showFinished)
 	{
-		List<Task> taskList = taskService.getAllTasks(page, pageSize);
+		List<Task> taskList = taskService.getAllTasks(page, pageSize, 1l);
 		
 		int nbTasks = taskList.size();
 		int nbPages = ((nbTasks % pageSize) == 0) ? nbTasks/pageSize : nbTasks/pageSize + 1;
