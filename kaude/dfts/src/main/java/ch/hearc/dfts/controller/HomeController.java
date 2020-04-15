@@ -36,16 +36,32 @@ public class HomeController {
 		String userName = principal.getName();
 			
 		Page<Task> pagedResult = taskService.getAllTasks(page, pageSize, userName);
+
+		List<Task> taskList = null;
+		int nbPages = 1;
+		int currentPage = 1;
+		boolean isFirstPage = false;
+		boolean isLastPage = false;
 		
-		List<Task> taskList = ( pagedResult != null && pagedResult.hasContent() ) ? pagedResult.getContent() : new ArrayList<Task>();
+		if(pagedResult != null && pagedResult.hasContent()) {
+			taskList = pagedResult.getContent();
+			nbPages = pagedResult.getTotalPages();
+			currentPage = pagedResult.getNumber();
+			isFirstPage = pagedResult.isFirst();
+			isLastPage = pagedResult.isLast();
+		}
+		else
+			taskList = new ArrayList<Task>();
 		
-		int nbPages = ( pagedResult != null && pagedResult.hasContent() ) ? pagedResult.getTotalPages() : 1;
 		List<Integer> pages = IntStream.range(1, nbPages+1).boxed().collect(Collectors.toList());
 		
 		model.addAttribute("task_list", taskList);
 		model.addAttribute("pages", pages);
 		model.addAttribute("show_finished", showFinished);
 		model.addAttribute("user_name", userName);
+		model.addAttribute("current_page", currentPage);
+		model.addAttribute("is_first_page", isFirstPage);
+		model.addAttribute("is_last_page", isLastPage);
 		
 		return "index";
 	}
