@@ -85,9 +85,4 @@ public class Task {
 		this.users = users;
 	}
 	
-	public boolean markAsDone() {
-		this.done = true;
-		return true;
-	}
-	
 }
