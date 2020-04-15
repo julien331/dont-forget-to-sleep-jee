@@ -1,6 +1,5 @@
 package ch.hearc.dfts.models;
 
-import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.CascadeType;

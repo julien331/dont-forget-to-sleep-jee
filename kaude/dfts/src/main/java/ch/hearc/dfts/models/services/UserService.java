@@ -26,7 +26,6 @@ public class UserService implements IUserService {
 	@Autowired
 	private VerificationTokenRepository tokenRepository;
 
-
 	@Override
 	public void save(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
