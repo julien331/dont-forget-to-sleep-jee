@@ -7,9 +7,7 @@ import org.springframework.context.ApplicationEvent;
 import ch.hearc.dfts.models.User;
 
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private String appUrl;
 	private Locale locale;

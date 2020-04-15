@@ -14,14 +14,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
-
-
 @Configuration
 public class BeanConfiguration {
-	
-	@Autowired
-	private Environment env;
-	
 	@Value("${spring.mail.host}")
 	private String smtpHost;
 	
