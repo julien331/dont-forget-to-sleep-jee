@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -71,7 +68,10 @@ public class UserController {
 
 	private static final String REGISTRATION_FORM_PATH = "registration/registration.html";
 	private static final String INDEX_PATH = "redirect:/";
-	private static final String LOGIN_PATH = "redirect:/login";
+	
+	private static final String BADUSER_PATH = "registration/badUser";
+	private static final String EMAILERROR_PATH = "registration/emailError";
+	private static final String EMAILSUCESS_PATH = "registration/successRegister";
 
 	@RequestMapping(value="/login", method = RequestMethod.GET )
 	public String loginPage(WebRequest request, Model model) {
@@ -111,10 +111,9 @@ public class UserController {
 			String appUrl = request.getContextPath();
 			eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), appUrl));
 		} catch (Exception me) {
-			System.out.println(me.getMessage());
-			return new ModelAndView("registration/emailError", "user", user);
+			return new ModelAndView(EMAILERROR_PATH, "user", user);
 		}
-		return new ModelAndView("registration/successRegister", "user", user);
+		return new ModelAndView(EMAILSUCESS_PATH, "user", user);
 	}
 
 	@GetMapping("/registrationConfirm")
@@ -127,7 +126,7 @@ public class UserController {
 		if (verificationToken == null) {
 			String message = messages.getMessage("auth.message.invalidToken", null, locale);
 			model.addAttribute("message", message);
-			return "registration/badUser";
+			return BADUSER_PATH;
 		}
 
 		User user = verificationToken.getUser();
@@ -135,7 +134,7 @@ public class UserController {
 		if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
 			String messageValue = messages.getMessage("auth.message.expired", null, locale);
 			model.addAttribute("message", messageValue);
-			return "registration/badUser";
+			return BADUSER_PATH;
 		}
 
 		user.setEnabled(true);
