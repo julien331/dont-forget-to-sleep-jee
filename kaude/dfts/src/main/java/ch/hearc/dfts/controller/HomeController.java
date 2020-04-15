@@ -8,8 +8,6 @@ import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,20 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.hearc.dfts.models.Task;
-import ch.hearc.dfts.models.User;
-import ch.hearc.dfts.models.repositories.TaskRepository;
 import ch.hearc.dfts.models.services.TaskService;
-import ch.hearc.dfts.models.services.UserDetailServiceImpl;
 
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
 	
-	@Autowired
-	private TaskRepository taskRepo;
-	@Autowired
-	private UserDetailServiceImpl utilisateurService;
 	@Autowired
 	private TaskService taskService;
 	
@@ -47,8 +38,8 @@ public class HomeController {
 		Page<Task> pagedResult = taskService.getAllTasks(page, pageSize, userName);
 		
 		List<Task> taskList = ( pagedResult != null && pagedResult.hasContent() ) ? pagedResult.getContent() : new ArrayList<Task>();
-		int nbPages = pagedResult.getTotalPages();
 		
+		int nbPages = ( pagedResult != null && pagedResult.hasContent() ) ? pagedResult.getTotalPages() : 1;
 		List<Integer> pages = IntStream.range(1, nbPages+1).boxed().collect(Collectors.toList());
 		
 		model.addAttribute("task_list", taskList);
