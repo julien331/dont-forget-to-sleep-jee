@@ -24,23 +24,16 @@ public class TaskService {
 	@Autowired
 	UserRepository userRepo;
      
-    public List<Task> getAllTasks(Integer page, Integer pageSize, Long userId) {
+    public List<Task> getAllTasks(Integer page, Integer pageSize, String userName) {
         Pageable paging = PageRequest.of(page, pageSize);
 
     	Page<Task> pagedResult = null;
  
-        Optional<User> u = userRepo.findById(userId);
-        if(u.isPresent())
-        {
-        	User user = u.get();
-        	
-        	
-        	if(user.getName().equals("admin"))
-        		pagedResult = taskRepo.findAll(paging);
-        	else
-        		pagedResult = taskRepo.findByUsers(userId, paging);
-        		
-        }
+        User user = userRepo.findByName(userName);
+    	if(user.getName().equals("admin"))
+    		pagedResult = taskRepo.findAll(paging);
+    	else
+    		pagedResult = taskRepo.findByUsers_Name(user.getName(), paging);
          
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();

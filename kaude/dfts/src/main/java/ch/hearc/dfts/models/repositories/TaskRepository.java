@@ -6,5 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import ch.hearc.dfts.models.Task;
 
 public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
-	Page<Task> findByUsers(Long userId, Pageable pageable);
+	Page<Task> findByUsers_Name(String userName, Pageable pageable);
 }
