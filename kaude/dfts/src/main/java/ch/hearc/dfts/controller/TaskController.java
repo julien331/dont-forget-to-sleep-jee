@@ -29,16 +29,13 @@ public class TaskController {
 	
 	@RequestMapping(value="/edit/{id}/done",method=RequestMethod.GET)
 	public String mark_done(Model model, @PathVariable long id) {
-		
 		Optional<Task> task = taskRepo.findById(id);
 
 		if(task.isPresent())
 		{
-//			Task t = task.get();
-//			t.setDone(true);
-//			taskRepo.save(t);
-			task.get().markAsDone();
-			
+			Task t = task.get();
+			t.setDone(true);
+			taskRepo.save(t);
 		}
 		
 		return "redirect:/";
