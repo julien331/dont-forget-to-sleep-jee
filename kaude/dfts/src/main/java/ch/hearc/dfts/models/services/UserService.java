@@ -26,8 +26,6 @@ public class UserService implements IUserService {
 	@Autowired
 	private VerificationTokenRepository tokenRepository;
 
-	@Autowired
-	private RoleRepository roleRepo;
 
 	@Override
 	public void save(User user) {
@@ -48,35 +46,6 @@ public class UserService implements IUserService {
 	public User findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
-
-//	@Override
-//	public User registerNewUserAccount(User accountDto) throws Exception {
-//		if (emailExist(accountDto.getEmail())) {
-//			throw new Exception("There is an account with that email adress: " + accountDto.getEmail());
-//		}
-//
-//		User user = new User();
-//		user.setName(accountDto.getName());
-//		user.setPassword(bCryptPasswordEncoder.encode(accountDto.getPassword()));
-//		
-//		user.setEmail(accountDto.getEmail());
-//
-//		Role roleUser = roleRepo.findByName("ROLE_ADMIN");
-//
-//		Set<Role> rolesUser = new HashSet<>();
-//		rolesUser.add(roleUser);
-//		user.setRoles(rolesUser);
-//
-//		return userRepository.save(user);
-//	}
-
-//	private boolean emailExist(String email) {
-//		User user = userRepository.findByEmail(email);
-//		if (user != null) {
-//			return true;
-//		}
-//		return false;
-//	}
 
 	@Override
 	public User getUser(String verificationToken) {
