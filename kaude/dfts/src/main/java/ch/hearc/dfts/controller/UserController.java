@@ -33,6 +33,7 @@ import ch.hearc.dfts.models.services.IUserService;
 import ch.hearc.dfts.models.services.UserService;
 import ch.hearc.dfts.registration.OnRegistrationCompleteEvent;
 import ch.hearc.dfts.security.SecurityConfiguration;
+import ch.hearc.dfts.security.SecurityService;
 import ch.hearc.dfts.validators.UserValidator;
 
 @Controller
@@ -49,6 +50,9 @@ public class UserController {
 
 	@Autowired
 	SecurityConfiguration securityConfig;
+	
+	@Autowired
+	SecurityService securityService;
 
 	@Autowired
 	private UserValidator userValidator;
@@ -136,7 +140,9 @@ public class UserController {
 
 		user.setEnabled(true);
 		service.saveRegisteredUser(user);
-		return LOGIN_PATH;
+		securityService.autoLogin(user.getName(), user.getPassword());
+		
+		return INDEX_PATH;
 	}
 
 }
