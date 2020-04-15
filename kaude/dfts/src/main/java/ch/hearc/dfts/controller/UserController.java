@@ -139,7 +139,6 @@ public class UserController {
 
 		user.setEnabled(true);
 		service.saveRegisteredUser(user);
-		securityService.autoLogin(user.getName(), user.getPassword());
 		
 		return INDEX_PATH;
 	}
