@@ -15,12 +15,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import ch.hearc.dfts.dto.UserDto;
 
 @Entity
 @Table(name = "tbl_users")
 public class User {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -51,7 +53,8 @@ public class User {
 		super();
 		this.enabled = false;
 		this.name = "Toto";
-		this.password = "Jämes";
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		this.password = encoder.encode("Jämes");
 	}
 
 	public User(UserDto userDto) {
@@ -59,7 +62,7 @@ public class User {
 		this.enabled = false;
 		this.name = userDto.getName();
 		this.email = userDto.getEmail();
-		this.password = userDto.getPassword();
+		this.password =  userDto.getPassword();
 	}
 
 	public Long getId() {

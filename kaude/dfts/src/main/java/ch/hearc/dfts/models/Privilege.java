@@ -32,7 +32,6 @@ public class Privilege {
 		    inverseJoinColumns = @JoinColumn(name = "privilege_id")
 		)
 	private Set<Role> roles;
-	//private Collection<Role> roles;
 
 	public Privilege() {
 		super();
