@@ -1,11 +1,13 @@
 package ch.hearc.dfts.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -42,10 +44,11 @@ public class HomeController {
 	{
 		String userName = principal.getName();
 			
-		List<Task> taskList = taskService.getAllTasks(page, pageSize, userName);
+		Page<Task> pagedResult = taskService.getAllTasks(page, pageSize, userName);
 		
-		int nbTasks = taskList.size();
-		int nbPages = ((nbTasks % pageSize) == 0) ? nbTasks/pageSize : nbTasks/pageSize + 1;
+		List<Task> taskList = pagedResult.hasContent() ? pagedResult.getContent() : new ArrayList<Task>();
+		int nbPages = pagedResult.getTotalPages();
+//		int nbPages = ((nbTasks % pageSize) == 0) ? nbTasks/pageSize : nbTasks/pageSize + 1;
 		
 		List<Integer> pages = IntStream.range(1, nbPages+1).boxed().collect(Collectors.toList());
 		

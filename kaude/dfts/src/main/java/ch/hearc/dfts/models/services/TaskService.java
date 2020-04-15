@@ -24,7 +24,7 @@ public class TaskService {
 	@Autowired
 	UserRepository userRepo;
      
-    public List<Task> getAllTasks(Integer page, Integer pageSize, String userName) {
+    public Page<Task> getAllTasks(Integer page, Integer pageSize, String userName) {
         Pageable paging = PageRequest.of(page, pageSize);
 
     	Page<Task> pagedResult = null;
@@ -35,10 +35,6 @@ public class TaskService {
     	else
     		pagedResult = taskRepo.findByUsers_Name(user.getName(), paging);
          
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-            return new ArrayList<>();
-        }
+        return pagedResult;
     }
 }

@@ -64,9 +64,8 @@ public class TaskController {
 		}
 
 		taskRepo.save(task);
-		model.addAttribute("tasks", taskRepo.findAll());
-
-		return "index.html";
+		
+		return "redirect:/";
 	}
 	
 	@GetMapping("/delete/{id}")
@@ -76,8 +75,7 @@ public class TaskController {
 		}
 
 		taskRepo.delete(task);
-		model.addAttribute("tasks", taskRepo.findAll());
-
-		return "index.html";
+		
+		return "redirect:/";
 	}
 }
