@@ -12,7 +12,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tbl_tasks")
 public class Task {
-	
 	@GeneratedValue
 	@Id
 	private long id;
