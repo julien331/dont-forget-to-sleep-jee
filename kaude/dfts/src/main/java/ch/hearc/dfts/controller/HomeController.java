@@ -46,9 +46,8 @@ public class HomeController {
 			
 		Page<Task> pagedResult = taskService.getAllTasks(page, pageSize, userName);
 		
-		List<Task> taskList = pagedResult.hasContent() ? pagedResult.getContent() : new ArrayList<Task>();
+		List<Task> taskList = ( pagedResult != null && pagedResult.hasContent() ) ? pagedResult.getContent() : new ArrayList<Task>();
 		int nbPages = pagedResult.getTotalPages();
-//		int nbPages = ((nbTasks % pageSize) == 0) ? nbTasks/pageSize : nbTasks/pageSize + 1;
 		
 		List<Integer> pages = IntStream.range(1, nbPages+1).boxed().collect(Collectors.toList());
 		
