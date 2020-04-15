@@ -5,11 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.validation.constraints.AssertTrue;
-
 import org.junit.jupiter.api.Test;
 
-class RoleTest {
+class TaskTest {
 
 	@Test
 	void givenARoleInstanceWithAUser_whenCallGetUsers_thenReturnsUser() {
@@ -29,6 +27,7 @@ class RoleTest {
 		System.out.println(user);
 		
 		Set<User> users = new HashSet<User>();
+		System.out.println(users);
 		users.add(user);
 		role.setUsers(users);
 		
