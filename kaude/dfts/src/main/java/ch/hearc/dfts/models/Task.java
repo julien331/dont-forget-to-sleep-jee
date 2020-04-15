@@ -37,7 +37,6 @@ public class Task {
 	public Task() 
 	{
 		super();
-		
 		this.done = false;
 	}
 	
@@ -84,6 +83,11 @@ public class Task {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+	
+	public boolean markAsDone() {
+		this.done = true;
+		return true;
 	}
 	
 }

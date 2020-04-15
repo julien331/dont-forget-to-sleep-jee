@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class TaskTest {
 
 	@Test
-	void givenARoleInstanceWithAUser_whenCallGetUsers_thenReturnsUser() {
+	void givenATask_whenMarkingAsDone_thenReturnsUser() {
 
 		User user = new User();
 
