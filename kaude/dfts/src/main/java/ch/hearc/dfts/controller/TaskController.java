@@ -40,6 +40,22 @@ public class TaskController {
 		
 		return "redirect:/";
 	}
+	@RequestMapping(value="{id}",method=RequestMethod.GET)
+	public String modify(Model model, @PathVariable long id) {
+		Optional<Task> task = taskRepo.findById(id);
+
+		if(task.isPresent())
+		{
+			Task t = task.get();
+			
+			model.addAttribute("task", t);
+			taskRepo.save(t);
+			
+			return "form";
+		}
+		
+		return "redirect:/";
+	}
 	@GetMapping("/tasks")
 	public String getTestData(Model model) {
 
@@ -64,7 +80,24 @@ public class TaskController {
 		}
 
 		taskRepo.save(task);
+
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/{id}")
+	public String redoTask(@Valid Task task, BindingResult result, Model model, @PathVariable long id) {
+		Optional<Task> opTask = taskRepo.findById(id);
 		
+		if(opTask.isPresent())
+		{
+			Task t = opTask.get();
+			t.setDescription(task.getName());
+			t.setDescription(task.getDescription());
+			
+			model.addAttribute("task", t);
+			taskRepo.save(t);			
+		}
+
 		return "redirect:/";
 	}
 	
@@ -75,7 +108,7 @@ public class TaskController {
 		}
 
 		taskRepo.delete(task);
-		
+
 		return "redirect:/";
 	}
 }
