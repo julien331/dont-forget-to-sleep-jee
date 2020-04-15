@@ -35,7 +35,7 @@
 			<nav aria-label="Pagination des tâches">
 				<ul class="pagination justify-content-center">
 					<li class="page-item">
-						<a class="page-link" href="#" aria-label="Précédent">
+						<a class="page-link" th:href="@{/(page=${current_page - 1})}" th:unless="${is_first_page}" aria-label="Précédent">
 							<span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
 							<span class="sr-only">Précédent</span>
 						</a>
@@ -44,7 +44,7 @@
 						<a class="page-link" th:href="@{/(page=${p-1})}" th:text="${p}"></a>
 					</li>
 					<li class="page-item">
-						<a class="page-link" href="#" aria-label="Suivant">
+						<a class="page-link" th:href="@{/(page=${current_page + 1})}" th:unless="${is_last_page}" aria-label="Suivant">
 							<span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
 							<span class="sr-only">Suivant</span>
 						</a>
