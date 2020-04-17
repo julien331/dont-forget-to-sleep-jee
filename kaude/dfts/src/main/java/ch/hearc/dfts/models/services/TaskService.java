@@ -26,6 +26,9 @@ public class TaskService {
     	Page<Task> pagedResult = null;
  
         User user = userRepo.findByName(userName);
+        
+        
+        
     	if(user.getName().equals("admin"))
     		pagedResult = taskRepo.findAll(paging);
     	else

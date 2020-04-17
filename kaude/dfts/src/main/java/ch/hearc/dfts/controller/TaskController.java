@@ -95,9 +95,17 @@ public class TaskController {
 		
 		long id=savedId;
 		savedId=0;
+		
 		if(id==0)
-		{
+		{		
+			String userName = principal.getName();
+			User u = userRepo.findByName(userName);
+			
 			taskRepo.save(task);
+			
+			Set<Task> t = u.getTasks();
+			t.add(task);
+			userRepo.save(u);
 		}
 		else
 		{
@@ -109,7 +117,7 @@ public class TaskController {
 				t.setDescription(task.getDescription());
 				
 				model.addAttribute("task", t);
-				taskRepo.save(t);			
+				taskRepo.save(t);
 			}
 		}
 		return "redirect:/";
