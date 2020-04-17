@@ -29,10 +29,6 @@ public class TaskController {
 	public long savedId=0;
 
 	
-	
-	
-	
-	
 	@RequestMapping(value="/edit/{id}/done",method=RequestMethod.GET)
 	public String mark_done(Model model, @PathVariable long id) {
 		Optional<Task> task = taskRepo.findById(id);
@@ -55,6 +51,7 @@ public class TaskController {
 			Task t = task.get();
 			
 			model.addAttribute("task", t);
+			model.addAttribute("formTitle", "Modification d'une tâche");
 			taskRepo.save(t);
 			
 			savedId=id;
@@ -78,6 +75,7 @@ public class TaskController {
 	public String addTask(Model model) {
 		Task task = new Task();
 	    model.addAttribute("task", task);
+		model.addAttribute("formTitle", "Ajout d'une tâche");
 		return "form";
 	}
 	
