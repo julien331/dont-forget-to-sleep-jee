@@ -1,6 +1,9 @@
 package ch.hearc.dfts.controller;
 
+import java.security.Principal;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -15,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch.hearc.dfts.models.Task;
+import ch.hearc.dfts.models.User;
 import ch.hearc.dfts.models.repositories.TaskRepository;
+import ch.hearc.dfts.models.repositories.UserRepository;
 import ch.hearc.dfts.models.services.UserDetailServiceImpl;
 
 @Controller
@@ -23,9 +28,11 @@ import ch.hearc.dfts.models.services.UserDetailServiceImpl;
 public class TaskController {
 
 	@Autowired
-	TaskRepository taskRepo;
+	private TaskRepository taskRepo;
 	@Autowired
 	private UserDetailServiceImpl utilisateurService;
+	@Autowired
+	private UserRepository userRepo;
 	
 	@RequestMapping(value="/edit/{id}/done",method=RequestMethod.GET)
 	public String mark_done(Model model, @PathVariable long id) {
@@ -74,11 +81,18 @@ public class TaskController {
 	}
 	
 	@PostMapping("")
-	public String addTask(@Valid Task task, BindingResult result, Model model) {
+	public String addTask(@Valid Task task, BindingResult result, Model model, Principal principal) {
 		if (result.hasErrors()) {
 			return "form.html";
 		}
-
+		String userName = principal.getName();
+		User u = userRepo.findByName(userName);
+		
+		Set<User> s = new HashSet<User>();
+		s.add(u);
+		
+		task.setUsers(s);
+		
 		taskRepo.save(task);
 
 		return "redirect:/";
