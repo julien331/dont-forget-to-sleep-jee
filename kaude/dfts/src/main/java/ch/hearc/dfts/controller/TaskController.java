@@ -26,6 +26,12 @@ public class TaskController {
 	TaskRepository taskRepo;
 	@Autowired
 	private UserDetailServiceImpl utilisateurService;
+	public long savedId=0;
+
+	
+	
+	
+	
 	
 	@RequestMapping(value="/edit/{id}/done",method=RequestMethod.GET)
 	public String mark_done(Model model, @PathVariable long id) {
@@ -50,6 +56,8 @@ public class TaskController {
 			
 			model.addAttribute("task", t);
 			taskRepo.save(t);
+			
+			savedId=id;
 			
 			return "form";
 		}
@@ -78,28 +86,28 @@ public class TaskController {
 		if (result.hasErrors()) {
 			return "form.html";
 		}
-
-		taskRepo.save(task);
-
+		long id=savedId;
+		savedId=0;
+		if(id==0)
+		{
+			taskRepo.save(task);
+		}
+		else
+		{
+			Optional<Task> taskToChange = taskRepo.findById(id);
+			if(taskToChange.isPresent())
+			{
+				Task t = taskToChange.get();
+				t.setName(task.getName());
+				t.setDescription(task.getDescription());
+				
+				model.addAttribute("task", t);
+				taskRepo.save(t);			
+			}
+		}
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value="/{id}")
-	public String redoTask(@Valid Task task, BindingResult result, Model model, @PathVariable long id) {
-		Optional<Task> opTask = taskRepo.findById(id);
-		
-		if(opTask.isPresent())
-		{
-			Task t = opTask.get();
-			t.setDescription(task.getName());
-			t.setDescription(task.getDescription());
-			
-			model.addAttribute("task", t);
-			taskRepo.save(t);			
-		}
-
-		return "redirect:/";
-	}
 	
 	@GetMapping("/delete/{id}")
 	public String deleteTask(@Valid Task task, BindingResult result, Model model, @PathVariable Long id) {
