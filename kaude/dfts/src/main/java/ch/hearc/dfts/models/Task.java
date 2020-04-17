@@ -21,7 +21,7 @@ public class Task {
 	
 	private boolean done;
 
-    @ManyToMany(mappedBy = "tasks", cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "tasks")
     private Set<User> users;
 
 	public Task(long id, String name, String description, boolean done, Set<User> users) {

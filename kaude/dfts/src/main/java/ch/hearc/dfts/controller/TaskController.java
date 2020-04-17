@@ -1,7 +1,6 @@
 package ch.hearc.dfts.controller;
 
 import java.security.Principal;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -128,9 +127,18 @@ public class TaskController {
 		if (result.hasErrors()) {
 			return "index.html";
 		}
-
+		
+		Optional<Task> t = taskRepo.findById(id);
+		task = t.get();
+		
+		for(User u : task.getUsers())
+		{
+			u.getTasks().remove(task);
+			userRepo.save(u);
+		}
+		
 		taskRepo.delete(task);
-
+		
 		return "redirect:/";
 	}
 }
