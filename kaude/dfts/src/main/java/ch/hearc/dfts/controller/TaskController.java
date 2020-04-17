@@ -33,6 +33,7 @@ public class TaskController {
 	private UserDetailServiceImpl utilisateurService;
 	@Autowired
 	private UserRepository userRepo;
+	public long savedId=0;
 	
 	@RequestMapping(value="/edit/{id}/done",method=RequestMethod.GET)
 	public String mark_done(Model model, @PathVariable long id) {
@@ -57,6 +58,8 @@ public class TaskController {
 			
 			model.addAttribute("task", t);
 			taskRepo.save(t);
+			
+			savedId=id;
 			
 			return "form";
 		}
@@ -98,22 +101,6 @@ public class TaskController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value="/{id}")
-	public String redoTask(@Valid Task task, BindingResult result, Model model, @PathVariable long id) {
-		Optional<Task> opTask = taskRepo.findById(id);
-		
-		if(opTask.isPresent())
-		{
-			Task t = opTask.get();
-			t.setDescription(task.getName());
-			t.setDescription(task.getDescription());
-			
-			model.addAttribute("task", t);
-			taskRepo.save(t);			
-		}
-
-		return "redirect:/";
-	}
 	
 	@GetMapping("/delete/{id}")
 	public String deleteTask(@Valid Task task, BindingResult result, Model model, @PathVariable Long id) {
