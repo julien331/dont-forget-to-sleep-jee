@@ -184,23 +184,4 @@ public class User {
 			return false;
 		return true;
 	}
-
-//	@Override
-//	public boolean equals(Object o) {
-//		if (o instanceof User) {
-//			User toCompare = (User) o;
-//
-//			return toCompare.id == this.id;
-//		} else {
-//			return false;
-//		}
-//	}
-//
-//	@Override
-//	public int hashCode() {
-//		return this.id.hashCode();
-//	}
-	
-	
-
 }
