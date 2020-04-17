@@ -48,6 +48,7 @@ public class TaskController {
 		
 		return "redirect:/";
 	}
+	
 	@RequestMapping(value="{id}",method=RequestMethod.GET)
 	public String modify(Model model, @PathVariable long id) {
 		Optional<Task> task = taskRepo.findById(id);
@@ -67,6 +68,7 @@ public class TaskController {
 		
 		return "redirect:/";
 	}
+	
 	@GetMapping("/tasks")
 	public String getTestData(Model model) {
 
@@ -112,7 +114,6 @@ public class TaskController {
 		}
 		return "redirect:/";
 	}
-	
 	
 	@GetMapping("/delete/{id}")
 	public String deleteTask(@Valid Task task, BindingResult result, Model model, @PathVariable Long id) {
