@@ -38,10 +38,11 @@ public class HomeController {
 		Page<Task> pagedResult = taskService.getAllTasks(page, pageSize, userName);
 
 		List<Task> taskList = null;
+		//Default values
 		int nbPages = 1;
 		int currentPage = 1;
-		boolean isFirstPage = false;
-		boolean isLastPage = false;
+		boolean isFirstPage = true;
+		boolean isLastPage = true;
 		
 		if(pagedResult != null && pagedResult.hasContent()) {
 			taskList = pagedResult.getContent();
