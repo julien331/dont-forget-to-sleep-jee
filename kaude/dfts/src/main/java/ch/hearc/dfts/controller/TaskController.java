@@ -90,16 +90,26 @@ public class TaskController {
 		if (result.hasErrors()) {
 			return "form.html";
 		}
-		String userName = principal.getName();
-		User u = userRepo.findByName(userName);
 		
-		Set<User> s = new HashSet<User>();
-		s.add(u);
-		
-		task.setUsers(s);
-		
-		taskRepo.save(task);
-
+		long id=savedId;
+		savedId=0;
+		if(id==0)
+		{
+			taskRepo.save(task);
+		}
+		else
+		{
+			Optional<Task> taskToChange = taskRepo.findById(id);
+			if(taskToChange.isPresent())
+			{
+				Task t = taskToChange.get();
+				t.setName(task.getName());
+				t.setDescription(task.getDescription());
+				
+				model.addAttribute("task", t);
+				taskRepo.save(t);			
+			}
+		}
 		return "redirect:/";
 	}
 	
