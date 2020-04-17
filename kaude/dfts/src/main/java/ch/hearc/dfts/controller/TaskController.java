@@ -93,12 +93,11 @@ public class TaskController {
 		String userName = principal.getName();
 		User u = userRepo.findByName(userName);
 		
-		Set<User> s = new HashSet<User>();
-		s.add(u);
-		
-		task.setUsers(s);
-		
 		taskRepo.save(task);
+		
+		Set<Task> t = u.getTasks();
+		t.add(task);
+		userRepo.save(u);
 
 		return "redirect:/";
 	}
