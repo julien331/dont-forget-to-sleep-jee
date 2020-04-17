@@ -3,8 +3,6 @@ package ch.hearc.dfts.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,7 +33,7 @@ public class HomeController {
 	{
 		String userName = principal.getName();
 			
-		Page<Task> pagedResult = taskService.getAllTasks(page, pageSize, userName);
+		Page<Task> pagedResult = taskService.getAllTasks(page, pageSize, userName, showFinished);
 
 		List<Task> taskList = null;
 		//Default values
@@ -54,10 +52,8 @@ public class HomeController {
 		else
 			taskList = new ArrayList<Task>();
 		
-		List<Integer> pages = IntStream.range(1, nbPages+1).boxed().collect(Collectors.toList());
-		
 		model.addAttribute("task_list", taskList);
-		model.addAttribute("pages", pages);
+		model.addAttribute("nb_pages", nbPages);
 		model.addAttribute("show_finished", showFinished);
 		model.addAttribute("user_name", userName);
 		model.addAttribute("current_page", currentPage);

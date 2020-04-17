@@ -20,7 +20,7 @@ public class TaskService {
 	@Autowired
 	UserRepository userRepo;
      
-    public Page<Task> getAllTasks(Integer page, Integer pageSize, String userName) {
+    public Page<Task> getAllTasks(Integer page, Integer pageSize, String userName, boolean showDone) {
         Pageable paging = PageRequest.of(page, pageSize);
 
     	Page<Task> pagedResult = null;
@@ -36,11 +36,18 @@ public class TaskService {
         		break;
         	}
         }
-        if(admin)
-    		pagedResult = taskRepo.findAll(paging);
-    	else
-    		pagedResult = taskRepo.findByUsers_Name(user.getName(), paging);
-         
+        if(admin) {
+        	if(showDone)
+        		pagedResult = taskRepo.findAll(paging);
+        	else
+        		pagedResult = taskRepo.findByDone(false, paging);
+        }else {
+        	if(showDone)
+        		pagedResult = taskRepo.findByUsers_Name(user.getName(), paging);
+        	else
+        		pagedResult = taskRepo.findByUsers_NameAndDone(user.getName(), false, paging);
+        }
+        
         return pagedResult;
     }
 }

@@ -33,18 +33,19 @@
 			
 			<!-- Pagination -->
 			<nav aria-label="Pagination des tâches">
+				<p hidden th:text="${current_page}" id="current_page"></p>
 				<ul class="pagination justify-content-center">
 					<li class="page-item">
-						<a class="page-link" th:href="@{/(page=${current_page - 1})}" th:unless="${is_first_page}" aria-label="Précédent">
+						<a class="page-link" th:href="@{/(page=${current_page - 1}, showFinished=${show_finished})}" th:unless="${is_first_page}" aria-label="Précédent">
 							<span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
 							<span class="sr-only">Précédent</span>
 						</a>
 					</li>
-					<li class="page-item" th:each="p : ${pages}">
-						<a class="page-link" th:href="@{/(page=${p-1})}" th:text="${p}"></a>
+					<li class="page-item" th:each="p : ${#numbers.sequence(1, nb_pages)}">
+						<a class="page-link" th:href="@{/(page=${p-1}, showFinished=${show_finished})}" th:text="${p}" ></a>
 					</li>
 					<li class="page-item">
-						<a class="page-link" th:href="@{/(page=${current_page + 1})}" th:unless="${is_last_page}" aria-label="Suivant">
+						<a class="page-link" th:href="@{/(page=${current_page + 1}, showFinished=${show_finished})}" th:unless="${is_last_page}" aria-label="Suivant">
 							<span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
 							<span class="sr-only">Suivant</span>
 						</a>
@@ -57,7 +58,7 @@
 				<div class="box col-sm-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4 ">
 					<div class="box-part">
 						
-						<div class="card add-space-bottom" th:each="task : ${task_list}" th:if="${not task.done or show_finished}"> <!-- th:each="task : ${task_list}" -->
+						<div class="card add-space-bottom" th:each="task : ${task_list}" > <!-- th:each="task : ${task_list}" -->
 							<div class="card-body">
 								<h4 class="card-title text-center" th:text="${task.name}">Titre</h4> <!-- th:text="${task.name}" -->
 								<p class="card-text" th:text="${task.description}">Description</p> <!-- th:text="${task.description}" -->
@@ -76,7 +77,7 @@
 		<script type="text/javascript">
 		function toggle_finished()
 		{
-			window.location = "/?showFinished=" + (document.getElementById('finished_tasks').checked).toString();
+			window.location = "/?page=" + (document.getElementById('current_page').innerHTML) + "&showFinished=" + (document.getElementById('finished_tasks').checked).toString();
 		}
 		</script>
 	</body>
