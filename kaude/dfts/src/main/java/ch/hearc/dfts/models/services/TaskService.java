@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import ch.hearc.dfts.models.Role;
 import ch.hearc.dfts.models.Task;
 import ch.hearc.dfts.models.User;
 import ch.hearc.dfts.models.repositories.TaskRepository;
@@ -16,7 +17,6 @@ public class TaskService {
 	
 	@Autowired
     TaskRepository taskRepo;
-	
 	@Autowired
 	UserRepository userRepo;
      
@@ -27,9 +27,16 @@ public class TaskService {
  
         User user = userRepo.findByName(userName);
         
-        
-        
-    	if(user.getName().equals("admin"))
+        boolean admin = false;
+        for(Role r : user.getRoles())
+        {
+        	if(r.getName().equals("ROLE_ADMIN"))
+        	{
+        		admin = true;
+        		break;
+        	}
+        }
+        if(admin)
     		pagedResult = taskRepo.findAll(paging);
     	else
     		pagedResult = taskRepo.findByUsers_Name(user.getName(), paging);
