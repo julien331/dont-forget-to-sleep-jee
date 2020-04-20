@@ -49,6 +49,7 @@ pipeline {
         steps {
           /*sh 'katalon-execute.sh -browserType="Firefox" -retry=0 -statusDelay=15 -testSuitePath="kaude/dfts-katalon-tests/TestCases/Connection"'
           sh 'katalon-execute.sh -browserType="Firefox" -retry=0 -statusDelay=15 -testSuitePath="kaude/dfts-katalon-tests/TestCases/crud"'*/
+          sh 'echo "license problem"'
         }
 
       }
