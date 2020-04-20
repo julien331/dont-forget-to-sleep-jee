@@ -17,7 +17,7 @@ pipeline {
           stash name: "app", includes: "**"
         }
       }
-      stage('QualityTest') {
+      stage('UnitTest') {
         agent {
           docker {
             image 'maven:3-alpine'
@@ -26,10 +26,20 @@ pipeline {
         steps {
           unstash "app"
           sh 'cd kaude/dfts && mvn clean test'
+        }
+      }
+      stage('QualityTest') {
+        agent {
+          docker {
+            image 'maven:3-alpine'
+          }
+        }
+        steps {
+          unstash "app"
           sh 'cd kaude/dfts && mvn sonar:sonar -Dsonar.projectKey=julien331_dont-forget-to-sleep-jee -Dsonar.organization=spring-qdl-ekipe -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=51c596b64d3f51e4a40063d0e90369992df408fb'
         }
       }
-      /*stage('IntegrationTest'){
+      stage('IntegrationTest'){
         agent{
           docker{
             image 'katalonstudio/katalon'
@@ -37,11 +47,11 @@ pipeline {
           }
         }
         steps {
-          sh 'katalon-execute.sh -browserType="Firefox" -retry=0 -statusDelay=15 -testSuitePath="kaude/dfts-katalon-tests/TestCases/Connection"'
-          sh 'katalon-execute.sh -browserType="Firefox" -retry=0 -statusDelay=15 -testSuitePath="kaude/dfts-katalon-tests/TestCases/crud"'
+          /*sh 'katalon-execute.sh -browserType="Firefox" -retry=0 -statusDelay=15 -testSuitePath="kaude/dfts-katalon-tests/TestCases/Connection"'
+          sh 'katalon-execute.sh -browserType="Firefox" -retry=0 -statusDelay=15 -testSuitePath="kaude/dfts-katalon-tests/TestCases/crud"'*/
         }
 
-      }*/
+      }
       stage('DockerImageCreation') {
           steps{
             unstash "app"
