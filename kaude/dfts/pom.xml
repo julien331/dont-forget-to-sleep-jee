@@ -92,10 +92,10 @@
 		
 		<!-- intégration avec thymeleaf -->
 		<dependency>
-        <groupId>com.github.ulisesbocchio</groupId>
-        <artifactId>jasypt-spring-boot</artifactId>
-        <version>2.1.1</version>
-</dependency>
+	        <groupId>com.github.ulisesbocchio</groupId>
+	        <artifactId>jasypt-spring-boot</artifactId>
+	        <version>2.1.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -106,5 +106,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
