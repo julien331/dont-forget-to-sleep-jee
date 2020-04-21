@@ -3,6 +3,7 @@ pipeline {
     registry = "jojoc4/dont-forget-to-sleep-jee"
     registryCredential = 'dockerhubjojoc4'
     dockerImage = ''
+    MDP_SMTP = 'test'
   }
   agent any
   stages {
@@ -13,7 +14,7 @@ pipeline {
           }
         }
         steps {
-          sh 'cd kaude/dfts && mvn clean package'
+          sh 'printenv MDP_SMTP && cd kaude/dfts && mvn clean package'
           stash name: "app", includes: "**"
         }
       }
@@ -25,6 +26,7 @@ pipeline {
         }
         steps {
           unstash "app"
+          sh 'export MDP_SMTP=exemple'
           sh 'cd kaude/dfts && mvn clean test'
         }
       }
