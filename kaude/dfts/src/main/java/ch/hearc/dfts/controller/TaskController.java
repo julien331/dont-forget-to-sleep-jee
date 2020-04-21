@@ -48,7 +48,7 @@ public class TaskController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value="{id}",method=RequestMethod.GET)
+	@GetMapping("{id}")
 	public String modify(Model model, @PathVariable long id) {
 		Optional<Task> task = taskRepo.findById(id);
 
@@ -58,7 +58,6 @@ public class TaskController {
 			
 			model.addAttribute("task", t);
 			model.addAttribute("formTitle", "Modification d'une tâche");
-			taskRepo.save(t);
 			
 			savedId=id;
 			
@@ -66,16 +65,6 @@ public class TaskController {
 		}
 		
 		return "redirect:/";
-	}
-	
-	@GetMapping("/tasks")
-	public String getTestData(Model model) {
-
-		Iterable<Task> tasks = taskRepo.findAll();
-
-		model.addAttribute("tasks", tasks);
-
-		return "index";
 	}
 	
 	@GetMapping("")
@@ -95,6 +84,7 @@ public class TaskController {
 		long id=savedId;
 		savedId=0;
 		
+		//modifying a task
 		if(id==0)
 		{		
 			String userName = principal.getName();
@@ -106,6 +96,7 @@ public class TaskController {
 			t.add(task);
 			userRepo.save(u);
 		}
+		//adding a task
 		else
 		{
 			Optional<Task> taskToChange = taskRepo.findById(id);
@@ -115,7 +106,6 @@ public class TaskController {
 				t.setName(task.getName());
 				t.setDescription(task.getDescription());
 				
-				model.addAttribute("task", t);
 				taskRepo.save(t);
 			}
 		}
@@ -125,19 +115,22 @@ public class TaskController {
 	@GetMapping("/delete/{id}")
 	public String deleteTask(@Valid Task task, BindingResult result, Model model, @PathVariable Long id) {
 		if (result.hasErrors()) {
-			return "index.html";
+			return "redirect:/";
 		}
 		
 		Optional<Task> t = taskRepo.findById(id);
-		task = t.get();
-		
-		for(User u : task.getUsers())
+		if(t.isPresent())
 		{
-			u.getTasks().remove(task);
-			userRepo.save(u);
+			Task task2 = t.get();
+			
+			for(User u : task2.getUsers())
+			{
+				u.getTasks().remove(task2);
+				userRepo.save(u);
+			}
+			
+			taskRepo.delete(task2);
 		}
-		
-		taskRepo.delete(task);
 		
 		return "redirect:/";
 	}
