@@ -33,7 +33,7 @@
 			
 			<!-- Pagination -->
 			<nav aria-label="Pagination des tâches">
-				<p hidden th:text="${current_page}" id="current_page"></p>
+				<p hidden th:text="${current_page-1}" id="current_page"></p>
 				<ul class="pagination justify-content-center">
 					<li class="page-item">
 						<a class="page-link" th:href="@{/(page=${current_page - 1}, showFinished=${show_finished})}" th:unless="${is_first_page}" aria-label="Précédent">
