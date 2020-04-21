@@ -14,7 +14,7 @@ pipeline {
         }
         steps {
           sh 'export MDP_SMTP=exemple'
-          sh 'cd kaude/dfts && mvn clean package'
+          sh 'printenv MDP_SMTP && cd kaude/dfts && mvn clean package'
           stash name: "app", includes: "**"
         }
       }
