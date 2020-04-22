@@ -31,6 +31,8 @@ public class TaskController {
 	private UserRepository userRepo;
 	public long savedId=0;
 	
+	private final String HOME_REDIRECTION = "redirect:/";
+	
 	@RequestMapping(value="/edit/{id}/done",method=RequestMethod.GET)
 	public String mark_done(Model model, @PathVariable long id) {
 		Optional<Task> task = taskRepo.findById(id);
@@ -42,7 +44,7 @@ public class TaskController {
 			taskRepo.save(t);
 		}
 		
-		return "redirect:/";
+		return HOME_REDIRECTION;
 	}
 	
 	@GetMapping("{id}")
@@ -60,8 +62,8 @@ public class TaskController {
 			
 			return "form";
 		}
-		
-		return "redirect:/";
+
+		return HOME_REDIRECTION;
 	}
 	
 	@GetMapping("")
@@ -75,7 +77,7 @@ public class TaskController {
 	@PostMapping("")
 	public String addTask(@Valid Task task, BindingResult result, Model model, Principal principal) {
 		if (result.hasErrors()) {
-			return "form.html";
+			return "form";
 		}
 		
 		long id=savedId;
@@ -106,13 +108,13 @@ public class TaskController {
 				taskRepo.save(t);
 			}
 		}
-		return "redirect:/";
+		return HOME_REDIRECTION;
 	}
 	
 	@GetMapping("/delete/{id}")
 	public String deleteTask(@Valid Task task, BindingResult result, Model model, @PathVariable Long id) {
 		if (result.hasErrors()) {
-			return "redirect:/";
+			return HOME_REDIRECTION;
 		}
 		
 		Optional<Task> t = taskRepo.findById(id);
@@ -128,7 +130,7 @@ public class TaskController {
 			
 			taskRepo.delete(task2);
 		}
-		
-		return "redirect:/";
+
+		return HOME_REDIRECTION;
 	}
 }
