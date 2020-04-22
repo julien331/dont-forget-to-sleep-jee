@@ -20,7 +20,6 @@ import ch.hearc.dfts.models.Task;
 import ch.hearc.dfts.models.User;
 import ch.hearc.dfts.models.repositories.TaskRepository;
 import ch.hearc.dfts.models.repositories.UserRepository;
-import ch.hearc.dfts.models.services.UserDetailServiceImpl;
 
 @Controller
 @RequestMapping("/task")
@@ -28,8 +27,6 @@ public class TaskController {
 
 	@Autowired
 	private TaskRepository taskRepo;
-	@Autowired
-	private UserDetailServiceImpl utilisateurService;
 	@Autowired
 	private UserRepository userRepo;
 	public long savedId=0;

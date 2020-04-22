@@ -9,13 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import ch.hearc.dfts.dto.UserDto;
@@ -119,6 +117,17 @@ public class User {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	
+	public boolean isAdmin()
+	{
+        for(Role r : this.roles)
+        {
+        	if(r.getName().equals("ROLE_ADMIN"))
+        		return true;
+        }
+        
+        return false;
 	}
 
 	@Override

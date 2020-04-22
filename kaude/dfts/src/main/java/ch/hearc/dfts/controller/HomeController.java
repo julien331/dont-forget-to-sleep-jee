@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.hearc.dfts.models.Task;
+import ch.hearc.dfts.models.User;
+import ch.hearc.dfts.models.repositories.UserRepository;
 import ch.hearc.dfts.models.services.TaskService;
 
 
@@ -22,6 +24,8 @@ public class HomeController {
 	
 	@Autowired
 	private TaskService taskService;
+	@Autowired
+	private UserRepository userRepo;
 	
 	@GetMapping
 	public String mainPage(
@@ -32,8 +36,9 @@ public class HomeController {
 							Principal principal)
 	{
 		String userName = principal.getName();
+		User user = userRepo.findByName(userName);
 			
-		Page<Task> pagedResult = taskService.getAllTasks(page, pageSize, userName, showFinished);
+		Page<Task> pagedResult = taskService.getAllTasks(page, pageSize, user, showFinished);
 
 		//Default values
 		List<Task> taskList = null;
@@ -59,6 +64,7 @@ public class HomeController {
 		model.addAttribute("current_page", currentPage);
 		model.addAttribute("is_first_page", isFirstPage);
 		model.addAttribute("is_last_page", isLastPage);
+		model.addAttribute("is_admin", user.isAdmin());
 		
 		return "index";
 	}

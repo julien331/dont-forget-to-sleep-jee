@@ -16,7 +16,7 @@
 				<h2 class="text-center col-sm-12">Liste des tâches</h2>
 			</div>
 			
-			<p class="text-center text-info">Bonjour <span th:text="${user_name}"></span> !</p>
+			<p class="text-center text-default">Bonjour <span th:text="${user_name}"></span> !</p>
 			
 			<div class="spacer border-bottom"></div>
 			
@@ -61,6 +61,7 @@
 						<div class="card add-space-bottom" th:each="task : ${task_list}" > <!-- th:each="task : ${task_list}" -->
 							<div class="card-body">
 								<h4 class="card-title text-center" th:text="${task.name}">Titre</h4> <!-- th:text="${task.name}" -->
+								<p th:if="${is_admin}" class="font-italic text-info">Tâche ajoutée par : <span th:text="${task.users[0].name}"></span></p>
 								<p class="card-text" th:text="${task.description}">Description</p> <!-- th:text="${task.description}" -->
 								<span class="float-right">
 									<a th:href="@{/task/delete/} + ${task.id}" class="btn btn-danger">Supprimer</a> <!-- th:href="${/task/delete/{id}(id${task.id})}" -->
