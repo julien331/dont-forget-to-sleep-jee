@@ -20,6 +20,7 @@ import ch.hearc.dfts.models.Task;
 import ch.hearc.dfts.models.User;
 import ch.hearc.dfts.models.repositories.TaskRepository;
 import ch.hearc.dfts.models.repositories.UserRepository;
+import ch.hearc.dfts.models.services.UserService;
 
 @Controller
 @RequestMapping("/task")
@@ -29,6 +30,9 @@ public class TaskController {
 	private TaskRepository taskRepo;
 	@Autowired
 	private UserRepository userRepo;
+	@Autowired
+	private UserService userService;
+	
 	public long savedId=0;
 	
 	private static final String HOME_REDIRECTION = "redirect:/";
@@ -83,6 +87,9 @@ public class TaskController {
 	@GetMapping("")
 	public String addTask(Model model) {
 		Task task = new Task();
+		
+		User user = userService.getCurrentUser();
+		model.addAttribute("user_name",user.getName());
 	    model.addAttribute("task", task);
 		model.addAttribute("formTitle", "Ajout d'une tâche");
 		return "form";

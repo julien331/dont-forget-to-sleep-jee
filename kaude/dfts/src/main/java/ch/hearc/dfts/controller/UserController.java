@@ -42,7 +42,7 @@ public class UserController {
 	private UserService userService;
 
 	@Autowired
-	ApplicationEventPublisher eventPublisher;
+	private ApplicationEventPublisher eventPublisher;
 
 	@Autowired
 	private MessageSource messages;
