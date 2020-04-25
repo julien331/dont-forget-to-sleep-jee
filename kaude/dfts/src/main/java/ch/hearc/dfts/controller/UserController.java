@@ -139,10 +139,12 @@ public class UserController {
 		userValidator.validatePassword(userDto, result);
 		User user = userService.getCurrentUser();
 		
+		UserDto userToReturn = new UserDto(user);
+		userToReturn.setPassword("");
+		userToReturn.setMatchingPassword("");
+		
 		if (result.hasErrors()) {
-			
-
-			ModelAndView modelAndView =  new ModelAndView("updateuser", "userDto",new UserDto(user));
+			ModelAndView modelAndView =  new ModelAndView("updateuser", "userDto",userToReturn);
 			
 			List<String> errorCodesList = new ArrayList<String>();
 			
