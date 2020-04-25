@@ -35,4 +35,12 @@ public class TaskService {
         
         return pagedResult;
     }
+    
+    public Page<Task> findTask(String taskName, Integer pageSize) {
+    	Pageable paging = PageRequest.of(0, pageSize);
+
+    	Page<Task> pagedResult = taskRepo.findByNameLikeIgnoreCase("%"+taskName+"%", paging);
+        
+    	return pagedResult;
+    }
 }

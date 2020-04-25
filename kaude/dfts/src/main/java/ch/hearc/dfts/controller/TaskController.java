@@ -31,9 +31,9 @@ public class TaskController {
 	private UserRepository userRepo;
 	public long savedId=0;
 	
-	private final String HOME_REDIRECTION = "redirect:/";
-	
-	@RequestMapping(value="/edit/{id}/done",method=RequestMethod.GET)
+	private static final String HOME_REDIRECTION = "redirect:/";
+
+	@GetMapping("/edit/{id}/done")
 	public String mark_done(Model model, @PathVariable long id) {
 		Optional<Task> task = taskRepo.findById(id);
 
@@ -41,6 +41,20 @@ public class TaskController {
 		{
 			Task t = task.get();
 			t.setDone(true);
+			taskRepo.save(t);
+		}
+		
+		return HOME_REDIRECTION;
+	}
+	
+	@GetMapping("/edit/{id}/undone")
+	public String mark_undone(Model model, @PathVariable long id) {
+		Optional<Task> task = taskRepo.findById(id);
+
+		if(task.isPresent())
+		{
+			Task t = task.get();
+			t.setDone(false);
 			taskRepo.save(t);
 		}
 		

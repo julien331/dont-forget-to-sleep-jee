@@ -33,12 +33,18 @@ public class HomeController {
 							@RequestParam(defaultValue="0") Integer page,
 							@RequestParam(defaultValue="3") Integer pageSize,
 							@RequestParam(defaultValue="false") Boolean showFinished,
+							@RequestParam(defaultValue="") String taskName,
 							Principal principal)
 	{
 		String userName = principal.getName();
 		User user = userRepo.findByName(userName);
 			
-		Page<Task> pagedResult = taskService.getAllTasks(page, pageSize, user, showFinished);
+		Page<Task> pagedResult = null;
+		
+		if(taskName.equals(""))
+			pagedResult = taskService.getAllTasks(page, pageSize, user, showFinished);
+		else
+			pagedResult = taskService.findTask(taskName, pageSize);
 
 		//Default values
 		List<Task> taskList = null;
