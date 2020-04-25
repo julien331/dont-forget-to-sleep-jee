@@ -23,12 +23,12 @@
 						<div class="card add-space-bottom" >
 							<form class="card-body" th:action="@{/task}" th:object="${task}" method="post" enctype="utf8">
 								<label for="nameTask">Nom de la tâche :</label>
-								<input type="text" th:field="*{name}" value="${task.name}" class="form-control" id="nameTaskInput" maxlenght="40">
+								<input type="text" th:field="*{name}" value="${task.name}" class="form-control" id="nameTaskInput" maxlength="40">
 								<label for="descTask">Description :</label>
-								<textarea class="form-control" th:field="*{description}" value="${task.description}" id="descTaskInput" rows="3" style="min-width: 100%" maxlenght="120"></textarea>									
+								<textarea class="form-control" th:field="*{description}" value="${task.description}" id="descTaskInput" rows="3" style="min-width: 100%" maxlength="120"></textarea>									
 									    
 								<span class="float-right">
-									<input type="submit" class="btn btn-success"> </a>
+									<input type="submit" class="btn btn-success">
 								</span>
 							</form>
 						</div>

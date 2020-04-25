@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<object th:include="head :: head" th:remove="tag" />
+		<title>Don't forget to sleep</title>
+	</head>
+	
+	<body>
+		<!-- Inserting navbar -->
+		<div th:insert="nav"></div>
+		
+		<!-- Page content -->
+
+		<div class="container-fluid">
+			<!-- Page title -->
+			<div class="row">
+				<h1 class="text-center col-sm-12">Don't forget to sleep!</h1>
+				<h2 class="text-center col-sm-12">Gestion de mon profil</h2>
+			</div>
+			
+						<div class="row">
+				<div class="box col-sm-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4 ">
+					<div class="card">
+					<div class="card-header">Mise à jour</div>
+					<div class="card-body">					
+						<div th:if="${errors != null}" class="alert alert-danger" role="alert">
+							<ul th:each="error : ${errors}">
+								<li th:text="${error}"></li>
+							</ul>
+						</div>
+						<form th:action="@{/user}" th:object="${userDto}" method="post" enctype="utf8">
+	
+							<div class="form-group row">
+								<label
+									class="col-12 col-sm-4 col-md- col-form-label text-sm-right"
+									for="id_username">Nom d&#x27;utilisateur</label> <input 
+									type="text" th:field="*{name}" value="${userDto.name}"
+									maxlength="30" autofocus class="col-12 col-sm-6 form-control"
+									required id="id_username" disabled="disabled">
+							</div>
+
+							<div class="form-group row">
+								<label
+									class="col-12 col-sm-4 col-md- col-form-label text-sm-right"
+									for="id_email">Adresse courriel</label> <input type="text"
+									th:field="*{email}" value="${userDto.email}" name="email"
+									maxlength="200" class="col-12 col-sm-6 form-control" required
+									id="id_email" disabled="disabled">
+							</div>
+
+							<div class="form-group row">
+								<label
+									class="col-12 col-sm-4 col-md- col-form-label text-sm-right"
+									for="id_password1">Mot de passe</label> <input type="password"
+									th:field="*{password}" value="" name="password1"
+									class="col-12 col-sm-6 form-control" required id="id_password1">
+							</div>
+
+							<div class="form-group row">
+								<label
+									class="col-12 col-sm-4 col-md- col-form-label text-sm-right"
+									for="id_password2">Confirmation</label> <input type="password"
+									th:field="*{matchingPassword}"
+									class="col-12 col-sm-6 form-control" required id="id_password2">
+							</div>
+
+							<div class="form-group row mb-0">
+								<div class="offset-3 offset-sm-4">
+									<button type="submit" class="btn btn-primary">Valider
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

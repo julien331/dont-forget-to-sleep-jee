@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch.hearc.dfts.models.Task;
 import ch.hearc.dfts.models.User;
 import ch.hearc.dfts.models.repositories.TaskRepository;
 import ch.hearc.dfts.models.repositories.UserRepository;
+import ch.hearc.dfts.models.services.UserService;
 
 @Controller
 @RequestMapping("/task")
@@ -29,11 +29,14 @@ public class TaskController {
 	private TaskRepository taskRepo;
 	@Autowired
 	private UserRepository userRepo;
+	@Autowired
+	private UserService userService;
+	
 	public long savedId=0;
 	
-	private final String HOME_REDIRECTION = "redirect:/";
-	
-	@RequestMapping(value="/edit/{id}/done",method=RequestMethod.GET)
+	private static final String HOME_REDIRECTION = "redirect:/";
+
+	@GetMapping("/edit/{id}/done")
 	public String mark_done(Model model, @PathVariable long id) {
 		Optional<Task> task = taskRepo.findById(id);
 
@@ -41,6 +44,20 @@ public class TaskController {
 		{
 			Task t = task.get();
 			t.setDone(true);
+			taskRepo.save(t);
+		}
+		
+		return HOME_REDIRECTION;
+	}
+	
+	@GetMapping("/edit/{id}/undone")
+	public String mark_undone(Model model, @PathVariable long id) {
+		Optional<Task> task = taskRepo.findById(id);
+
+		if(task.isPresent())
+		{
+			Task t = task.get();
+			t.setDone(false);
 			taskRepo.save(t);
 		}
 		
@@ -69,6 +86,9 @@ public class TaskController {
 	@GetMapping("")
 	public String addTask(Model model) {
 		Task task = new Task();
+		
+		User user = userService.getCurrentUser();
+		model.addAttribute("user_name",user.getName());
 	    model.addAttribute("task", task);
 		model.addAttribute("formTitle", "Ajout d'une tâche");
 		return "form";

@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,30 +23,15 @@ import org.springframework.web.servlet.ModelAndView;
 import ch.hearc.dfts.dto.UserDto;
 import ch.hearc.dfts.models.User;
 import ch.hearc.dfts.models.VerificationToken;
-import ch.hearc.dfts.models.repositories.RoleRepository;
-import ch.hearc.dfts.models.repositories.UserRepository;
 import ch.hearc.dfts.models.services.IUserService;
 import ch.hearc.dfts.models.services.UserService;
 import ch.hearc.dfts.registration.OnRegistrationCompleteEvent;
-import ch.hearc.dfts.security.SecurityConfiguration;
 import ch.hearc.dfts.security.SecurityService;
 import ch.hearc.dfts.validators.UserValidator;
 
 @Controller
 public class UserController {
 
-	@Autowired
-	UserRepository userRepo;
-
-	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
-
-	@Autowired
-	RoleRepository roleRepo;
-
-	@Autowired
-	SecurityConfiguration securityConfig;
-	
 	@Autowired
 	SecurityService securityService;
 
@@ -58,7 +42,7 @@ public class UserController {
 	private UserService userService;
 
 	@Autowired
-	ApplicationEventPublisher eventPublisher;
+	private ApplicationEventPublisher eventPublisher;
 
 	@Autowired
 	private MessageSource messages;
@@ -89,18 +73,10 @@ public class UserController {
 	public ModelAndView registerUserAccount(@Valid UserDto userDto, BindingResult result, WebRequest request) {
 
 		userValidator.validate(userDto, result);
+	
 
 		if (result.hasErrors()) {
-			ModelAndView modelAndView =  new ModelAndView(REGISTRATION_FORM_PATH, "userDto",userDto);
-			
-			List<String> errorCodesList = new ArrayList<String>();
-			
-			for(ObjectError err : result.getAllErrors()) {
-				errorCodesList.add(err.getCode());
-			}
-			
-			modelAndView.addObject("errors", errorCodesList);
-			return modelAndView;
+			return userService.manageErrorUser(result,REGISTRATION_FORM_PATH,userDto);
 		}
 
 		User user = new User(userDto);
@@ -142,5 +118,46 @@ public class UserController {
 		
 		return INDEX_PATH;
 	}
+	
+	@GetMapping("/user")
+	public String updateUser(WebRequest request, Model model) {
+		
+		User user = userService.getCurrentUser();
+		
+		UserDto userDto = new UserDto(user);
+		
+		model.addAttribute("userDto", userDto);
+		model.addAttribute("user_name",user.getName());
+		
+		
+		return "updateuser";
+	}
 
+	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	public ModelAndView updateUser(@Valid UserDto userDto, BindingResult result, WebRequest request) {
+		
+		userValidator.validatePassword(userDto, result);
+		User user = userService.getCurrentUser();
+		
+		if (result.hasErrors()) {
+			
+
+			ModelAndView modelAndView =  new ModelAndView("updateuser", "userDto",new UserDto(user));
+			
+			List<String> errorCodesList = new ArrayList<String>();
+			
+			for(ObjectError err : result.getAllErrors()) {
+				errorCodesList.add(err.getCode());
+			}
+			
+			modelAndView.addObject("errors", errorCodesList);
+			modelAndView.addObject("user_name",user.getName());
+			return modelAndView;
+		}
+		
+		user.setPassword(userDto.getPassword());
+		userService.updatePassword(user);
+		
+		return new ModelAndView("redirect:/");
+	}
 }
