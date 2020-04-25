@@ -36,10 +36,15 @@ public class TaskService {
         return pagedResult;
     }
     
-    public Page<Task> findTask(String taskName, Integer pageSize) {
+    public Page<Task> findTask(String taskName, Integer pageSize, User user) {
     	Pageable paging = PageRequest.of(0, pageSize);
-
-    	Page<Task> pagedResult = taskRepo.findByNameLikeIgnoreCase("%"+taskName+"%", paging);
+    	
+    	Page<Task> pagedResult = null;
+    	
+    	if(user.isAdmin()) 
+    		pagedResult = taskRepo.findByNameLikeIgnoreCase("%"+taskName+"%", paging);
+    	else
+    		pagedResult = taskRepo.findByUsers_NameAndNameLikeIgnoreCase(user.getName(), "%"+taskName+"%", paging);
         
     	return pagedResult;
     }

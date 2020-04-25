@@ -44,7 +44,7 @@ public class HomeController {
 		if(taskName.equals(""))
 			pagedResult = taskService.getAllTasks(page, pageSize, user, showFinished);
 		else
-			pagedResult = taskService.findTask(taskName, pageSize);
+			pagedResult = taskService.findTask(taskName, pageSize, user);
 
 		//Default values
 		List<Task> taskList = null;
