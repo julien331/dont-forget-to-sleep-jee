@@ -20,15 +20,23 @@
 			
 			<div class="spacer border-bottom"></div>
 			
-			<!-- Filtre -->
+			<!-- Filtre et recherche -->
 			<div class="row">
-				<div class="col-sm-12 col-md-6 col-lg-4 offset-md-3 offset-lg-4 form-inline">
+				<div class="col-sm-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4 form-inline">
 					<div class="form-check">
 						<input type="checkbox" name="finished_tasks" id="finished_tasks" class="form-check-input" 
 								th:checked="${show_finished}" onclick="toggle_finished()">
 						<label for="finished_tasks" class="form-check-label">Afficher les tâches terminées</label>
 					</div>
 				</div>
+				<form class="col-sm-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-4 mb-5" th:action="@{/}" method="GET" enctype="utf8">
+					<div class="input-group">
+						<input type="text" class="form-control" name="taskName" placeholder="Rechercher une tâche">
+						<div class="input-group-append">
+							<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+						</div>
+					</div>
+				</form>
 			</div>
 			
 			<!-- Pagination -->
@@ -55,7 +63,7 @@
 			
 			<!-- Content -->
 			<div class="row">
-				<div class="box col-sm-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4 ">
+				<div class="box col-sm-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
 					<div class="box-part">
 						
 						<div class="card add-space-bottom" th:each="task : ${task_list}" > <!-- th:each="task : ${task_list}" -->
@@ -65,8 +73,9 @@
 								<p class="card-text" th:text="${task.description}">Description</p> <!-- th:text="${task.description}" -->
 								<span class="float-right">
 									<a th:href="@{/task/delete/} + ${task.id}" class="btn btn-danger">Supprimer</a> <!-- th:href="${/task/delete/{id}(id${task.id})}" -->
-									<a th:href="@{/task/} + ${task.id}" class="btn btn-warning">Modifier</a>
-									<a th:href="@{/task/edit/} + ${task.id} + @{/done}" class="btn btn-success">Marquer comme terminée</a>
+									<a th:href="@{/task/} + ${task.id}" class="btn btn-primary">Modifier</a>
+									<a th:href="@{/task/edit/} + ${task.id} + @{/done}" class="btn btn-success" th:unless="${task.done}">Marquer comme terminée</a>
+									<a th:href="@{/task/edit/} + ${task.id} + @{/undone}" class="btn btn-success" th:if="${task.done}">Réactiver</a>
 								</span>
 							</div>
 						</div>
