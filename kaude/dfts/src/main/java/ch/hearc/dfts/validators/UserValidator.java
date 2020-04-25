@@ -54,6 +54,18 @@ public class UserValidator implements Validator {
 		}
 	}
 
+	
+	public void validatePassword(Object o, Errors errors) {
+		UserDto user = (UserDto) o;
+		
+		if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
+			errors.rejectValue("password", "La longueur du mot de passe doit être comprise entre 8 et 32 caractères");
+		}
+
+		if (!user.getMatchingPassword().equals(user.getPassword())) {
+			errors.rejectValue("password", "Les mots de passe ne sont pas identique");
+		}
+	}
 	// source : https://www.geeksforgeeks.org/check-email-address-valid-not-java/
 	private boolean isValidEmail(String email) {
 		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-z"

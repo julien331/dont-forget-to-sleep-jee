@@ -58,8 +58,6 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 		email.setTo(recipientAddress);
 		email.setSubject(subject);
 		email.setText(message + "\r\n" + host + confirmationUrl + "\r\n" + messageEnd);
-		
-		System.out.println(email.getText());
 
 		mailSender.send(email);
 	}
